@@ -1,0 +1,15 @@
+@model ReviewFormViewModel
+@{
+    ViewData["Title"] = "Sửa đánh giá";
+}
+<section class="page-hero"><div class="container"><h1>Sửa đánh giá</h1></div></section>
+<div class="container section">
+    <form class="panel p-4" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="BookingId" />
+        <div class="field"><label>Số sao</label><input asp-for="Rating" type="number" min="1" max="5" /></div>
+        <div class="field mt-2"><label>Nội dung</label><textarea asp-for="Comment" rows="4"></textarea></div>
+        <button class="btn btn-green mt-3" type="submit">Lưu</button>
+    </form>
+</div>

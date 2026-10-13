@@ -1,0 +1,7 @@
+@model FieldFormViewModel
+@{
+    ViewData["Title"] = "Sửa sân";
+}
+<h2>Cập nhật @Model.Name</h2>
+<partial name="_FieldForm" model="Model" />
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

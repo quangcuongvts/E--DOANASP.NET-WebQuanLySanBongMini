@@ -1,0 +1,201 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Đặt sân bóng mini";
+}
+<section class="hero">
+    <div class="pitch-lines" aria-hidden="true"></div>
+    <img class="hero-photo" src="~/images/hero-pitch.png" alt="Sân bóng mini ban đêm" />
+    <div class="container hero-grid">
+        <div class="hero-copy reveal">
+            <img class="hero-logo" src="~/images/logo-mark.png" alt="Mini Football Booking" />
+            <div class="kicker">HỆ THỐNG ĐẶT SÂN TRỰC TUYẾN</div>
+            <h1>ĐẶT SÂN BÓNG<br />NHANH CHÓNG<br /><span>SẴN SÀNG CHO MỌI TRẬN ĐẤU</span></h1>
+            <p class="lead">Tìm sân, chọn giờ còn trống và giữ lịch ngay. Giá tính theo khung giờ, không đặt trùng suất.</p>
+            <div class="hero-actions">
+                <a class="btn btn-green" asp-controller="Booking" asp-action="Create"><i class="bi bi-lightning-charge-fill"></i> ĐẶT SÂN NGAY</a>
+                <a class="btn btn-ghost" asp-controller="Fields" asp-action="Index">XEM DANH SÁCH SÂN</a>
+            </div>
+            <div class="stats">
+                <div class="stat"><b>@Model.FieldCount</b><span>sân hoạt động</span></div>
+                <div class="stat"><b>@Model.CustomerCount</b><span>khách hàng</span></div>
+                <div class="stat"><b>@Model.BookingCount</b><span>lượt đặt</span></div>
+            </div>
+        </div>
+        <form class="search-panel reveal" asp-controller="Fields" asp-action="Index" method="get">
+            <div class="panel-kicker">Tìm sân trong 10 giây</div>
+            <h3>Sân nào đang trống?</h3>
+            <div class="search-grid">
+                <div class="field full">
+                    <label>Tên sân hoặc khu vực</label>
+                    <input name="q" value="@Model.LastSearch" placeholder="Ví dụ: Champions, Quận 7" />
+                </div>
+                <div class="field">
+                    <label>Ngày đá</label>
+                    <input type="date" name="date" value="@AppClock.Today.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="field">
+                    <label>Giờ bắt đầu</label>
+                    <input type="time" name="start" value="18:00" />
+                </div>
+                <button class="btn btn-green full" type="submit">Tìm sân trống</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-head reveal">
+            <div>
+                <p class="eyebrow">Sân đang mở</p>
+                <h2>Sân nổi bật</h2>
+                <p class="muted">Ưu tiên sân được đánh giá cao và được đặt nhiều.</p>
+            </div>
+            <a class="btn btn-line" asp-controller="Fields" asp-action="Index">Tất cả sân</a>
+        </div>
+        <div class="field-grid">
+            @foreach (var field in Model.FeaturedFields)
+            {
+                <article class="field-card reveal">
+                    <div class="field-photo" style="background-image:url('@field.ImageUrl')">
+                        <span class="status photo-badge @field.DisplayStatus.Css()">@field.DisplayStatus.Text()</span>
+                    </div>
+                    <div class="field-body">
+                        <div class="meta"><span>@field.FieldCode</span><span>@field.TypeName</span><span>@field.Area</span></div>
+                        <h3>@field.Name</h3>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="stars">★ @field.RatingAverage.ToString("0.0") <small>(@field.RatingCount)</small></span>
+                            <span class="price">@field.BasePrice.VndText()<small>/h</small></span>
+                        </div>
+                        <div class="card-actions">
+                            <a class="btn btn-line btn-sm" asp-controller="Fields" asp-action="Details" asp-route-id="@field.Id">Xem chi tiết</a>
+                            <a class="btn btn-green btn-sm" asp-controller="Booking" asp-action="Create" asp-route-fieldId="@field.Id">Đặt sân</a>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section band">
+    <div class="container">
+        <div class="section-head reveal">
+            <div>
+                <p class="eyebrow">4 bước</p>
+                <h2>Quy trình đặt sân</h2>
+            </div>
+        </div>
+        <div class="steps">
+            <div class="step reveal"><span>01</span><h3>Chọn sân</h3><p class="muted">Lọc theo loại sân, khu vực và mức giá.</p></div>
+            <div class="step reveal"><span>02</span><h3>Chọn giờ</h3><p class="muted">Lịch trống theo từng khung, không giữ trùng suất.</p></div>
+            <div class="step reveal"><span>03</span><h3>Dịch vụ và voucher</h3><p class="muted">Thêm bóng, nước, trọng tài hoặc mã giảm giá.</p></div>
+            <div class="step reveal"><span>04</span><h3>Thanh toán</h3><p class="muted">Tiền mặt, chuyển khoản, QR hoặc VNPay mô phỏng.</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-head reveal">
+            <div>
+                <p class="eyebrow">Thêm cho trận đấu</p>
+                <h2>Dịch vụ đi kèm</h2>
+            </div>
+        </div>
+        <div class="card-grid">
+            @foreach (var service in Model.Services)
+            {
+                <article class="promo-card service-card reveal">
+                    <i class="bi bi-bag-check"></i>
+                    <h3>@service.Name</h3>
+                    <p class="muted">@service.Description</p>
+                    <strong>@service.Price.VndText()</strong>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section" style="padding-top:0">
+    <div class="container">
+        <div class="section-head reveal">
+            <div>
+                <p class="eyebrow">Ưu đãi đang mở</p>
+                <h2>Khuyến mãi</h2>
+            </div>
+            <a asp-controller="Promotions" asp-action="Index">Xem tất cả</a>
+        </div>
+        <div class="card-grid">
+            @foreach (var voucher in Model.Vouchers)
+            {
+                <article class="ticket reveal">
+                    <div>
+                        <div class="kicker">@voucher.VoucherCode</div>
+                        <h3>@voucher.Name</h3>
+                        <p>@voucher.Description</p>
+                    </div>
+                    <p class="muted">Đơn tối thiểu @voucher.MinOrderAmount.VndText()<br />đến @voucher.EndDate.ToString("dd/MM/yyyy")</p>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section" style="padding-top:0">
+    <div class="container why">
+        <div class="reveal">
+            <p class="eyebrow">Vì sao chọn chúng tôi</p>
+            <h2>Giữ đúng một suất, tính đúng một giá.</h2>
+            <div class="why-list">
+                <div class="why-item"><i class="bi bi-calendar2-check"></i><div><strong>Lịch trống chính xác</strong><span class="muted">Người xác nhận trước được giữ khung giờ.</span></div></div>
+                <div class="why-item"><i class="bi bi-cash-coin"></i><div><strong>Giá theo khung giờ</strong><span class="muted">Giờ thường, cao điểm và cuối tuần tính tự động.</span></div></div>
+                <div class="why-item"><i class="bi bi-person-check"></i><div><strong>Check-in tại sân</strong><span class="muted">Nhân viên xác nhận khách, thu tiền và hoàn tất trận.</span></div></div>
+            </div>
+        </div>
+        <div class="story-card reveal">
+            <img src="~/images/players-night.png" alt="Trận đấu sân mini ban đêm" />
+            <div class="story-body">
+                <h3>Khách hàng nói gì</h3>
+                @foreach (var review in Model.Reviews.Take(3))
+                {
+                    <p><span class="stars">@(new string('★', review.Rating))</span> @review.Comment</p>
+                    <p class="muted">@review.CustomerName · @review.FieldName</p>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="padding-top:0">
+    <div class="container">
+        <div class="section-head reveal">
+            <div>
+                <p class="eyebrow">Góc sân</p>
+                <h2>Bài viết</h2>
+            </div>
+            <a asp-controller="Posts" asp-action="Index">Xem thêm</a>
+        </div>
+        <div class="card-grid">
+            @foreach (var post in Model.Posts)
+            {
+                <a class="post-card reveal" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Slug">
+                    <div class="post-cover" style="@(string.IsNullOrEmpty(post.ThumbnailUrl) ? null : $"background-image:url('{post.ThumbnailUrl}')")"></div>
+                    <div class="post-body">
+                        <small>@post.PublishedAt?.ToString("dd/MM/yyyy")</small>
+                        <h3>@post.Title</h3>
+                        <p class="muted">@post.Summary</p>
+                    </div>
+                </a>
+            }
+        </div>
+        <div class="cta mt-4 reveal">
+            <img src="~/images/ball-close.png" alt="" />
+            <div>
+                <h2>Sẵn sàng cho trận đấu tiếp theo?</h2>
+                <p>Giữ sân trong vài phút, thanh toán linh hoạt và nhận thông báo khi gần đến giờ.</p>
+            </div>
+            <a class="btn btn-green" asp-controller="Booking" asp-action="Create">Đặt sân ngay</a>
+        </div>
+    </div>
+</section>

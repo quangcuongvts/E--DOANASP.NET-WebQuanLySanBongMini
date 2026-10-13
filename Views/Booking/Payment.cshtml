@@ -1,0 +1,38 @@
+@model BookingDetailViewModel
+@{
+    ViewData["Title"] = "Thanh toán " + Model.BookingCode;
+    var settings = ViewBag.Settings as Dictionary<string, string> ?? new Dictionary<string, string>();
+    string Setting(string key, string fallback) => settings.TryGetValue(key, out var value) ? value : fallback;
+    var payload = $"{Model.BookingCode}|{Model.TotalAmount}|MINI FOOTBALL";
+}
+<section class="page-hero"><div class="container"><h1>Thanh toán @Model.BookingCode</h1></div></section>
+<div class="container section detail-grid">
+    <div class="panel p-4">
+        <h3>@Setting("BankName", "Vietcombank")</h3>
+        <p>Số tài khoản: <strong>@Setting("BankAccount", "0123456789")</strong></p>
+        <p>Chủ tài khoản: @Setting("BankOwner", "CONG TY MINI FOOTBALL")</p>
+        <p>Nội dung: @Model.BookingCode</p>
+        <img alt="QR" width="220" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=@Uri.EscapeDataString(payload)" />
+        <p class="muted">QR demo. Bấm xác nhận sau khi chuyển khoản hoặc dùng VNPay mô phỏng.</p>
+        <form method="post" asp-action="Pay" class="d-flex gap-2 flex-wrap">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="success" value="true" />
+            <button class="btn btn-green" name="method" value="@PaymentMethod.BankTransfer">Tôi đã chuyển khoản</button>
+            <button class="btn btn-dark" name="method" value="@PaymentMethod.QRCode">Xác nhận QR</button>
+            <button class="btn btn-line" name="method" value="@PaymentMethod.VNPay">VNPay demo thành công</button>
+        </form>
+        <form method="post" asp-action="Pay" class="mt-2">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="method" value="@PaymentMethod.VNPay" />
+            <input type="hidden" name="success" value="false" />
+            <button class="btn btn-danger" type="submit">Mô phỏng thanh toán thất bại</button>
+        </form>
+    </div>
+    <aside class="summary-card">
+        <h3>@Model.TotalAmount.VndText()</h3>
+        <p>@Model.FieldName</p>
+        <p>@Model.BookingDate.ToString("dd/MM/yyyy") · @DisplayNames.Hours(Model.StartTime, Model.EndTime)</p>
+    </aside>
+</div>

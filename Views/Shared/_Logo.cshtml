@@ -1,0 +1,13 @@
+@{
+    var compact = ViewData["LogoCompact"] as bool? == true;
+}
+<span class="brand-lockup @(compact ? "is-compact" : "")">
+    <img class="brand-mark-img" src="~/images/logo.svg" alt="" />
+    <span class="brand-copy">
+        <strong>MINI FOOTBALL</strong>
+        @if (!compact)
+        {
+            <small>Booking</small>
+        }
+    </span>
+</span>

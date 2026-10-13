@@ -1,0 +1,8 @@
+@model BookingPageViewModel
+@{
+    ViewData["Title"] = "Đặt sân";
+}
+<section class="page-hero"><div class="container"><h1>Đặt sân</h1><p>Chọn sân, ngày, giờ, dịch vụ và voucher.</p></div></section>
+<div class="container section">
+    <partial name="_BookingWizard" model="Model" />
+</div>

@@ -1,0 +1,79 @@
+@model List<FootballField>
+@{
+    ViewData["Title"] = "Sân bóng";
+    var paging = (PagingModel)ViewBag.Paging;
+    var types = ViewBag.Types as List<FieldType> ?? [];
+    var keyword = ViewBag.Keyword as string;
+    int? typeId = ViewBag.TypeId as int?;
+    FieldStatus? status = ViewBag.Status as FieldStatus?;
+    var canEdit = User.IsInRole("Admin") || User.IsInRole("Manager");
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2 class="m-0">Sân bóng</h2>
+    @if (canEdit)
+    {
+        <a class="btn btn-green btn-sm" asp-action="Create">Thêm sân</a>
+    }
+</div>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input name="q" value="@keyword" placeholder="Tên, mã, khu vực" />
+        <select name="typeId">
+            <option value="">Mọi loại</option>
+            @foreach (var type in types)
+            {
+                <option value="@type.Id" selected="@(typeId == type.Id ? "selected" : null)">@type.Name</option>
+            }
+        </select>
+        <select name="status">
+            <option value="">Mọi trạng thái</option>
+            @foreach (FieldStatus item in Enum.GetValues(typeof(FieldStatus)))
+            {
+                <option value="@item" selected="@(status == item ? "selected" : null)">@item.Text()</option>
+            }
+        </select>
+        <button class="btn btn-dark" type="submit">Lọc</button>
+    </div>
+</form>
+@if (!Model.Any())
+{
+    <partial name="_Empty" model='@("Chưa có sân phù hợp.")' />
+}
+else
+{
+    <div class="table-card">
+        <table>
+            <tr><th>Mã</th><th>Tên</th><th>Loại</th><th>Giá</th><th>Trạng thái</th><th>Đánh giá</th><th></th></tr>
+            @foreach (var field in Model)
+            {
+                <tr>
+                    <td>@field.FieldCode</td>
+                    <td>@field.Name<br /><small>@field.Area</small></td>
+                    <td>@field.FieldType?.Name</td>
+                    <td>@field.BasePrice.VndText()</td>
+                    <td><span class="status @field.Status.Css()">@field.Status.Text()</span></td>
+                    <td>@field.RatingAverage.ToString("0.0")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@field.Id">Xem</a>
+                        @if (canEdit)
+                        {
+                            <a asp-action="Edit" asp-route-id="@field.Id">Sửa</a>
+                            <form class="d-inline js-confirm" method="post" asp-action="Lock" data-text="@(field.IsActive ? "Khóa sân " + field.Name + "?" : "Mở lại sân " + field.Name + "?")">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@field.Id" />
+                                <input type="hidden" name="open" value="@(!field.IsActive)" />
+                                <button class="btn btn-line btn-sm" type="submit">@(field.IsActive ? "Khóa" : "Mở")</button>
+                            </form>
+                            <form class="d-inline js-confirm" method="post" asp-action="Delete" data-text="Xóa mềm sân @field.Name? Booking cũ vẫn được giữ.">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@field.Id" />
+                                <button class="btn btn-dark btn-sm" type="submit">Xóa</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <partial name="_Pager" model="paging" />
+}

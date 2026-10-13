@@ -1,0 +1,110 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var current = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string Nav(string name) => current.Equals(name, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    ApplicationUser? currentUser = User.Identity?.IsAuthenticated == true ? await UserManager.GetUserAsync(User) : null;
+    var initials = TextHelper.Initials(currentUser?.FullName ?? User.Identity?.Name);
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@(ViewData["Title"] ?? "Mini Football Booking")</title>
+    <link rel="icon" href="~/images/logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" asp-controller="Home" asp-action="Index">
+                <partial name="_Logo" />
+            </a>
+            <button class="menu-toggle" type="button" data-menu aria-label="Mở menu"><i class="bi bi-list"></i></button>
+            <nav class="nav-links" data-nav>
+                <a class="@Nav("Home")" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                <a class="@Nav("Fields")" asp-controller="Fields" asp-action="Index">Sân bóng</a>
+                <a class="@Nav("Booking")" asp-controller="Booking" asp-action="Create">Đặt sân</a>
+                <a asp-controller="Booking" asp-action="Schedule">Lịch sân</a>
+                <a class="@Nav("Promotions")" asp-controller="Promotions" asp-action="Index">Khuyến mãi</a>
+                <a class="@Nav("Posts")" asp-controller="Posts" asp-action="Index">Bài viết</a>
+                <a asp-controller="Home" asp-action="Contact">Liên hệ</a>
+            </nav>
+            <div class="header-actions">
+                @await Component.InvokeAsync("NotificationBell")
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Staff"))
+                    {
+                        <a class="btn btn-ghost btn-sm" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Quản trị</a>
+                    }
+                    <div class="dropdown">
+                        <button class="user-chip" type="button">
+                            <span class="avatar-fallback">@initials</span>
+                            <span class="d-none d-md-inline">Tài khoản</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            @if (User.IsInRole("Customer"))
+                            {
+                                <a asp-controller="Account" asp-action="Dashboard">Bảng điều khiển</a>
+                                <a asp-controller="Booking" asp-action="Mine">Lịch đặt sân</a>
+                            }
+                            <a asp-controller="Account" asp-action="Profile">Hồ sơ</a>
+                            <a asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
+                            <a asp-controller="Notifications" asp-action="Index">Thông báo</a>
+                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit">Đăng xuất</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a class="btn btn-ghost btn-sm" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                    <a class="btn btn-green btn-sm" asp-controller="Account" asp-action="Register">Đăng ký</a>
+                }
+            </div>
+        </div>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <div class="brand footer-brand"><partial name="_Logo" /></div>
+                <img class="footer-crest" src="~/images/logo-mark.png" alt="Logo Mini Football Booking" />
+                <p>Đặt sân nhanh chóng – Cháy hết mình cùng đam mê.</p>
+            </div>
+            <div>
+                <h4>Liên hệ</h4>
+                <p>Hotline: 0901 234 567<br />Email: contact@minifootball.vn<br />Địa chỉ: 12 Nguyễn Huệ, Quận 1, TP.HCM</p>
+            </div>
+            <div>
+                <h4>Liên kết nhanh</h4>
+                <p><a asp-controller="Fields" asp-action="Index">Sân bóng</a><br /><a asp-controller="Booking" asp-action="Create">Đặt sân</a><br /><a asp-controller="Promotions" asp-action="Index">Khuyến mãi</a><br /><a asp-controller="Home" asp-action="Contact">Liên hệ</a></p>
+            </div>
+        </div>
+        <div class="container copyright">© 2026 Mini Football Booking.</div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (TempData["Success"] != null)
+    {
+        <script>window.tempSuccess = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["Success"]?.ToString()));</script>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <script>window.tempError = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["Error"]?.ToString()));</script>
+    }
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

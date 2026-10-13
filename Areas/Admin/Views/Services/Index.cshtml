@@ -1,0 +1,36 @@
+@model List<ServiceItem>
+@{
+    ViewData["Title"] = "Dịch vụ";
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2 class="m-0">Dịch vụ bổ sung</h2>
+    <a class="btn btn-green btn-sm" asp-action="Create">Thêm dịch vụ</a>
+</div>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input name="q" value="@ViewBag.Keyword" placeholder="Tên dịch vụ" />
+        <button class="btn btn-dark" type="submit">Tìm</button>
+    </div>
+</form>
+<div class="table-card">
+    <table>
+        <tr><th>Tên</th><th>Mô tả</th><th>Giá</th><th>Trạng thái</th><th></th></tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Price.VndText()</td>
+                <td>@(item.IsActive ? "Đang bán" : "Ngừng")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a>
+                    <form class="d-inline js-confirm" method="post" asp-action="Delete" data-text="Xóa hoặc ngừng dịch vụ @item.Name?">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-dark btn-sm" type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

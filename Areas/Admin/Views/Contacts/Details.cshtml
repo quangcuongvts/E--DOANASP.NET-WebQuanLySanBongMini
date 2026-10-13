@@ -1,0 +1,23 @@
+@model ContactMessage
+@{
+    ViewData["Title"] = Model.Subject;
+}
+<div class="panel p-4">
+    <h2>@Model.Subject</h2>
+    <p>@Model.FullName · @Model.Email · @Model.Phone</p>
+    <p>@Model.Status.Text() · @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+    <p>@Model.Message</p>
+    @if (Model.Status != ContactStatus.Processed)
+    {
+        <form class="d-inline" method="post" asp-action="Process">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button class="btn btn-green" type="submit">Đánh dấu đã xử lý</button>
+        </form>
+    }
+    <form class="d-inline js-confirm" method="post" asp-action="Delete" data-text="Xóa liên hệ này?">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button class="btn btn-dark" type="submit">Xóa</button>
+    </form>
+</div>

@@ -1,0 +1,18 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+<div class="auth-wrap">
+    <form class="auth-card" method="post">
+        @Html.AntiForgeryToken()
+        <h2>Tạo tài khoản khách hàng</h2>
+        <div asp-validation-summary="ModelOnly" class="validation"></div>
+        <div class="field"><label>Họ tên</label><input asp-for="FullName" /><span asp-validation-for="FullName" class="validation"></span></div>
+        <div class="field mt-2"><label>Email</label><input asp-for="Email" /><span asp-validation-for="Email" class="validation"></span></div>
+        <div class="field mt-2"><label>Số điện thoại</label><input asp-for="Phone" /><span asp-validation-for="Phone" class="validation"></span></div>
+        <div class="field mt-2"><label>Mật khẩu</label><input asp-for="Password" /><span asp-validation-for="Password" class="validation"></span></div>
+        <div class="field mt-2"><label>Xác nhận mật khẩu</label><input asp-for="ConfirmPassword" /><span asp-validation-for="ConfirmPassword" class="validation"></span></div>
+        <button class="btn btn-green w-100 mt-3" type="submit">Đăng ký</button>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

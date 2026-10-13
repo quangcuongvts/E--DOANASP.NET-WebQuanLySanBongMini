@@ -1,0 +1,29 @@
+@model List<AuditLog>
+@{
+    ViewData["Title"] = "Audit Log";
+    var paging = (PagingModel)ViewBag.Paging;
+}
+<h2>Nhật ký hệ thống</h2>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input name="q" value="@ViewBag.Keyword" placeholder="Hành động, đối tượng, người dùng" />
+        <button class="btn btn-dark" type="submit">Tìm</button>
+    </div>
+</form>
+<div class="table-card">
+    <table>
+        <tr><th>Thời gian</th><th>Người dùng</th><th>Hành động</th><th>Đối tượng</th><th>IP</th><th>Dữ liệu</th></tr>
+        @foreach (var log in Model)
+        {
+            <tr>
+                <td>@log.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(log.User?.FullName ?? "Hệ thống")</td>
+                <td>@log.Action</td>
+                <td>@log.EntityName #@log.EntityId</td>
+                <td>@log.IpAddress</td>
+                <td><small>@log.OldValues<br />@log.NewValues</small></td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_Pager" model="paging" />

@@ -1,0 +1,81 @@
+@model AdminDashboardViewModel
+@using System.Text.Json
+@using System.Text.Encodings.Web
+@{
+    ViewData["Title"] = Model.IsStaffDashboard ? "Ca làm việc" : "Dashboard";
+    var json = new JsonSerializerOptions { Encoder = JavaScriptEncoder.Default };
+    string J(object value) => JsonSerializer.Serialize(value, json);
+}
+@if (Model.IsStaffDashboard)
+{
+    <div class="kpi-grid">
+        <div class="kpi-card"><span>Booking hôm nay</span><strong>@Model.TodayBookings</strong></div>
+        <div class="kpi-card"><span>Sân đang sử dụng</span><strong>@Model.FieldsInUse</strong></div>
+        <div class="kpi-card"><span>Sân còn trống</span><strong>@Model.FreeFields</strong></div>
+        <div class="kpi-card"><span>Khách đã check-in</span><strong>@Model.CheckedInCustomers</strong></div>
+        <div class="kpi-card"><span>Chờ xác nhận</span><strong>@Model.PendingBookings</strong></div>
+        <div class="kpi-card"><span>Doanh thu ca hiện tại</span><strong>@Model.ShiftRevenue.VndText()</strong></div>
+    </div>
+}
+else
+{
+    <div class="kpi-grid">
+        <div class="kpi-card"><span>Tổng doanh thu</span><strong>@Model.TotalRevenue.VndText()</strong><div class="up">@Model.RevenueChangePercent.ToString("0.0")% so với tháng trước</div></div>
+        <div class="kpi-card"><span>Doanh thu hôm nay</span><strong>@Model.TodayRevenue.VndText()</strong></div>
+        <div class="kpi-card"><span>Booking hôm nay</span><strong>@Model.TodayBookings</strong></div>
+        <div class="kpi-card"><span>Booking tháng này</span><strong>@Model.MonthBookings</strong></div>
+        <div class="kpi-card"><span>Tổng khách hàng</span><strong>@Model.TotalCustomers</strong></div>
+        <div class="kpi-card"><span>Khách hàng mới</span><strong>@Model.NewCustomers</strong></div>
+        <div class="kpi-card"><span>Tổng sân</span><strong>@Model.TotalFields</strong></div>
+        <div class="kpi-card"><span>Sân đang sử dụng</span><strong>@Model.FieldsInUse</strong></div>
+        <div class="kpi-card"><span>Booking đã hủy</span><strong>@Model.CancelledBookings</strong></div>
+        <div class="kpi-card"><span>Tỷ lệ lấp đầy</span><strong>@Model.FillRate.ToString("0.0")%</strong></div>
+    </div>
+    <div class="chart-grid">
+        <div class="chart-card"><h3>Doanh thu 7 ngày</h3><canvas id="chart7"></canvas></div>
+        <div class="chart-card"><h3>Booking theo trạng thái</h3><canvas id="chartStatus"></canvas></div>
+    </div>
+    <div class="chart-grid">
+        <div class="chart-card"><h3>Doanh thu 12 tháng</h3><canvas id="chartMonth"></canvas></div>
+        <div class="chart-card"><h3>Top sân được đặt</h3><canvas id="chartTop"></canvas></div>
+    </div>
+    <div class="chart-card mt-3"><h3>Booking theo sân</h3><canvas id="chartField"></canvas></div>
+}
+<div class="chart-card mt-3">
+    <h3>Lịch sân hôm nay</h3>
+    @if (!Model.TodaySchedule.Any())
+    {
+        <partial name="_Empty" model='@("Hôm nay chưa có booking.")' />
+    }
+    else
+    {
+        <table>
+            <tr><th>Giờ</th><th>Sân</th><th>Khách</th><th>SĐT</th><th>Trạng thái</th><th></th></tr>
+            @foreach (var item in Model.TodaySchedule)
+            {
+                <tr>
+                    <td>@DisplayNames.Hours(item.StartTime, item.EndTime)</td>
+                    <td>@item.FieldName</td>
+                    <td>@item.CustomerName</td>
+                    <td>@item.Phone</td>
+                    <td><span class="status @item.Status.Css()">@item.Status.Text()</span></td>
+                    <td><a asp-controller="Bookings" asp-action="Details" asp-route-id="@item.Id">Mở</a></td>
+                </tr>
+            }
+        </table>
+    }
+</div>
+@if (!Model.IsStaffDashboard)
+{
+    @section Scripts {
+    <script>
+    const green = '#00C853';
+    const ink = '#081C15';
+    new Chart(document.getElementById('chart7'), { type: 'line', data: { labels: @Html.Raw(J(Model.Last7Labels)), datasets: [{ label: 'Doanh thu', data: @Html.Raw(J(Model.Last7Revenue)), borderColor: green, tension: .35 }] } });
+    new Chart(document.getElementById('chartMonth'), { type: 'bar', data: { labels: @Html.Raw(J(Model.MonthLabels)), datasets: [{ label: 'Doanh thu', data: @Html.Raw(J(Model.MonthRevenue)), backgroundColor: ink }] } });
+    new Chart(document.getElementById('chartStatus'), { type: 'doughnut', data: { labels: @Html.Raw(J(Model.StatusLabels)), datasets: [{ data: @Html.Raw(J(Model.StatusCounts)) }] } });
+    new Chart(document.getElementById('chartField'), { type: 'bar', data: { labels: @Html.Raw(J(Model.FieldLabels)), datasets: [{ label: 'Lượt đặt', data: @Html.Raw(J(Model.FieldBookingCounts)), backgroundColor: green }] } });
+    new Chart(document.getElementById('chartTop'), { type: 'bar', data: { labels: @Html.Raw(J(Model.TopFieldLabels)), datasets: [{ label: 'Top sân', data: @Html.Raw(J(Model.TopFieldCounts)), backgroundColor: '#69F0AE' }] }, options: { indexAxis: 'y' } });
+    </script>
+    }
+}

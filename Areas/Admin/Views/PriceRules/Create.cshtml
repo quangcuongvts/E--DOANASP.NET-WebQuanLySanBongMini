@@ -1,0 +1,38 @@
+@model PriceRule
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Thêm bảng giá" : "Sửa bảng giá";
+    var fields = ViewBag.Fields as List<FootballField> ?? [];
+}
+<h2>@ViewData["Title"]</h2>
+<form class="panel p-4" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="validation"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="search-grid">
+        <div class="field"><label>Sân</label>
+            <select asp-for="FieldId">
+                @foreach (var field in fields)
+                {
+                    <option value="@field.Id">@field.FieldCode - @field.Name</option>
+                }
+            </select>
+        </div>
+        <div class="field"><label>Ngày trong tuần</label>
+            <select asp-for="DayOfWeek">
+                @for (var day = 0; day <= 6; day++)
+                {
+                    <option value="@day">@DisplayNames.DayName(day)</option>
+                }
+            </select>
+        </div>
+        <div class="field"><label>Giờ bắt đầu</label><input asp-for="StartTime" type="time" /></div>
+        <div class="field"><label>Giờ kết thúc</label><input asp-for="EndTime" type="time" /></div>
+        <div class="field"><label>Giá mỗi giờ</label><input asp-for="PricePerHour" /></div>
+        <div class="field"><label>Hiệu lực từ</label><input asp-for="EffectiveFrom" type="date" /></div>
+        <div class="field"><label>Hiệu lực đến</label><input asp-for="EffectiveTo" type="date" /></div>
+    </div>
+    <label class="mt-2 me-3"><input asp-for="IsPeakHour" /> Giờ cao điểm</label>
+    <label><input asp-for="IsActive" /> Đang áp dụng</label>
+    <div><button class="btn btn-green mt-3" type="submit">Lưu</button></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

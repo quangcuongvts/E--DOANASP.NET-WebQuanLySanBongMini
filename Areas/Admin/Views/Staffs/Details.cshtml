@@ -1,0 +1,29 @@
+@model ApplicationUser
+@{
+    ViewData["Title"] = Model.FullName;
+    var handled = ViewBag.Handled as List<Booking> ?? [];
+}
+<div class="panel p-4">
+    <h2>@Model.FullName</h2>
+    <p>@Model.Email · @Model.PhoneNumber</p>
+    <h3>Booking đã phụ trách</h3>
+    @if (!handled.Any())
+    {
+        <partial name="_Empty" model='@("Nhân viên chưa phụ trách booking nào.")' />
+    }
+    else
+    {
+        <table>
+            @foreach (var booking in handled)
+            {
+                <tr>
+                    <td><a asp-controller="Bookings" asp-action="Details" asp-route-id="@booking.Id">@booking.BookingCode</a></td>
+                    <td>@booking.Customer?.FullName</td>
+                    <td>@booking.Field?.Name</td>
+                    <td>@booking.BookingDate.ToString("dd/MM/yyyy")</td>
+                    <td><span class="status @booking.Status.Css()">@booking.Status.Text()</span></td>
+                </tr>
+            }
+        </table>
+    }
+</div>

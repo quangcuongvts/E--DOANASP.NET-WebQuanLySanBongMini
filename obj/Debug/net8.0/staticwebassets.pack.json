@@ -1,0 +1,309 @@
+{
+  "Files": [
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MiniFootballBooking.bundle.scp.css",
+      "PackagePath": "staticwebassets\\MiniFootballBooking.bundle.scp.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\css\\admin.css",
+      "PackagePath": "staticwebassets\\css\\admin.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\images\\ball-close.png",
+      "PackagePath": "staticwebassets\\images\\ball-close.png"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\images\\field.svg",
+      "PackagePath": "staticwebassets\\images\\field.svg"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\images\\hero-pitch.png",
+      "PackagePath": "staticwebassets\\images\\hero-pitch.png"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\images\\logo-mark.png",
+      "PackagePath": "staticwebassets\\images\\logo-mark.png"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\images\\logo.svg",
+      "PackagePath": "staticwebassets\\images\\logo.svg"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\images\\pitch.svg",
+      "PackagePath": "staticwebassets\\images\\pitch.svg"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\images\\players-night.png",
+      "PackagePath": "staticwebassets\\images\\players-night.png"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\js\\booking.js",
+      "PackagePath": "staticwebassets\\js\\booking.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\uploads\\avatars\\.gitkeep",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\.gitkeep"
+    },
+    {
+      "Id": "E:\\DOANASP.NET\\WebQuanLySanBongMini\\MiniFootballBooking\\wwwroot\\uploads\\avatars\\d1ed2473e0b84e52aa8a676f5aa1bf13.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\d1ed2473e0b84e52aa8a676f5aa1bf13.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.MiniFootballBooking.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.MiniFootballBooking.props",
+      "PackagePath": "build\\MiniFootballBooking.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.MiniFootballBooking.props",
+      "PackagePath": "buildMultiTargeting\\MiniFootballBooking.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.MiniFootballBooking.props",
+      "PackagePath": "buildTransitive\\MiniFootballBooking.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

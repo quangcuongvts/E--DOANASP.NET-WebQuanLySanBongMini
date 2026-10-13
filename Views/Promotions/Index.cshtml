@@ -1,0 +1,23 @@
+@model List<Voucher>
+@{
+    ViewData["Title"] = "Khuyến mãi";
+}
+<section class="page-hero"><div class="container"><h1>Khuyến mãi</h1><p>Nhập mã khi đặt sân để được giảm giá.</p></div></section>
+<div class="container section card-grid">
+    @foreach (var voucher in Model)
+    {
+        <article class="promo-card">
+            <div class="kicker" style="color:#087443">@voucher.VoucherCode</div>
+            <h3>@voucher.Name</h3>
+            <p>@voucher.Description</p>
+            <p>
+                @(voucher.DiscountType == DiscountType.Percentage ? $"Giảm {voucher.DiscountValue}%" : $"Giảm {voucher.DiscountValue.VndText()}")
+                @if (voucher.MaxDiscountAmount != null)
+                {
+                    <span>· tối đa @voucher.MaxDiscountAmount.VndText()</span>
+                }
+            </p>
+            <p class="muted">Đơn tối thiểu @voucher.MinOrderAmount.VndText()<br />@voucher.StartDate.ToString("dd/MM/yyyy") - @voucher.EndDate.ToString("dd/MM/yyyy")</p>
+        </article>
+    }
+</div>

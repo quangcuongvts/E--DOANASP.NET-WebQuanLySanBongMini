@@ -1,0 +1,17 @@
+@model Payment
+@{
+    ViewData["Title"] = Model.PaymentCode;
+}
+<div class="panel p-4">
+    <h2>@Model.PaymentCode</h2>
+    <p>Booking: <a asp-controller="Bookings" asp-action="Details" asp-route-id="@Model.BookingId">@Model.Booking?.BookingCode</a></p>
+    <p>Sân: @Model.Booking?.Field?.Name</p>
+    <p>Người ghi nhận: @Model.User?.FullName</p>
+    <p>Số tiền: <b>@Model.Amount.VndText()</b></p>
+    <p>Hình thức: @Model.PaymentMethod.Text()</p>
+    <p>Trạng thái: <span class="status @Model.PaymentStatus.Css()">@Model.PaymentStatus.Text()</span></p>
+    <p>Mã giao dịch: @(Model.TransactionCode ?? "—")</p>
+    <p>Thời gian: @Model.PaymentDate?.ToString("dd/MM/yyyy HH:mm")</p>
+    <p>Nội dung: @Model.Note</p>
+    <a class="btn btn-line" asp-action="Index">Quay lại</a>
+</div>

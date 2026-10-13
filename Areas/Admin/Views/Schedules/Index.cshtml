@@ -1,0 +1,76 @@
+@model SchedulePageViewModel
+@{
+    ViewData["Title"] = "Lịch sân";
+}
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input type="date" name="date" value="@Model.Date.ToString("yyyy-MM-dd")" />
+        <select name="fieldId">
+            <option value="">Tất cả sân</option>
+            @foreach (var field in Model.Fields)
+            {
+                <option value="@field.Id" selected="@(Model.FieldId == field.Id ? "selected" : null)">@field.FieldCode - @field.Name</option>
+            }
+        </select>
+        <select name="mode">
+            <option value="day" selected="@(Model.Mode == "day" ? "selected" : null)">Lịch ngày</option>
+            <option value="week" selected="@(Model.Mode == "week" ? "selected" : null)">Lịch tuần</option>
+            <option value="month" selected="@(Model.Mode == "month" ? "selected" : null)">Lịch tháng</option>
+        </select>
+        <button class="btn btn-dark" type="submit">Xem lịch</button>
+        <a class="btn btn-green" asp-controller="Bookings" asp-action="Create" asp-route-date="@Model.Date.ToString("yyyy-MM-dd")" asp-route-fieldId="@Model.FieldId">Đặt tại quầy</a>
+    </div>
+</form>
+@if (Model.Mode == "week")
+{
+    <div class="card-grid">
+        @foreach (var day in Model.Week)
+        {
+            <article class="panel p-3">
+                <h3>@day.Date.ToString("dd/MM")</h3>
+                <p class="muted">@day.BookingCount lịch</p>
+                @foreach (var item in day.Items)
+                {
+                    <div class="mb-2">
+                        <a asp-controller="Bookings" asp-action="Details" asp-route-id="@item.Id">@DisplayNames.Hours(item.StartTime, item.EndTime)</a>
+                        <div class="muted">@item.FieldName · @item.CustomerName</div>
+                    </div>
+                }
+            </article>
+        }
+    </div>
+}
+else if (Model.Mode == "month")
+{
+    <div class="month-grid">
+        @foreach (var cell in Model.Month)
+        {
+            <a class="month-cell @(cell.InMonth ? "" : "muted")" asp-action="Index" asp-route-date="@cell.Date.ToString("yyyy-MM-dd")" asp-route-mode="day" asp-route-fieldId="@Model.FieldId">
+                <b>@cell.Date.Day</b>
+                <span>@cell.BookingCount lịch</span>
+            </a>
+        }
+    </div>
+}
+else if (!Model.Schedules.Any())
+{
+    <partial name="_Empty" model='@("Chưa có sân để hiển thị lịch.")' />
+}
+else
+{
+    @foreach (var field in Model.Schedules)
+    {
+        <div class="panel p-3 mb-3">
+            <h3>@field.FieldCode - @field.FieldName</h3>
+            <div class="choice-grid">
+                @foreach (var slot in field.Slots)
+                {
+                    <div class="slot slot-@slot.Status">
+                        <div>@slot.Start – @slot.End</div>
+                        <small>@slot.StatusText · @slot.Price.VndText()</small>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}

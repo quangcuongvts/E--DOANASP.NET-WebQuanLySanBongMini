@@ -1,0 +1,17 @@
+@model Banner
+@{
+    ViewData["Title"] = "Thêm banner";
+}
+<h2>Thêm banner</h2>
+<form class="panel p-4" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="validation"></div>
+    <div class="field"><label>Tiêu đề</label><input asp-for="Title" /><span asp-validation-for="Title" class="validation"></span></div>
+    <div class="field mt-2"><label>Phụ đề</label><input asp-for="Subtitle" /></div>
+    <div class="field mt-2"><label>Đường dẫn ảnh</label><input asp-for="ImageUrl" placeholder="/images/field.svg" /><span asp-validation-for="ImageUrl" class="validation"></span></div>
+    <div class="field mt-2"><label>Hoặc tải ảnh</label><input type="file" name="image" accept=".jpg,.jpeg,.png,.webp,.gif" /></div>
+    <div class="field mt-2"><label>Liên kết</label><input asp-for="LinkUrl" /></div>
+    <div class="field mt-2"><label>Thứ tự</label><input asp-for="SortOrder" /></div>
+    <label class="mt-2"><input asp-for="IsActive" /> Hiển thị</label>
+    <div><button class="btn btn-green mt-3" type="submit">Lưu</button></div>
+</form>

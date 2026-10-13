@@ -1,0 +1,58 @@
+@model FieldFormViewModel
+<form class="panel p-4" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="validation"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="search-grid">
+        <div class="field"><label>Mã sân</label><input asp-for="FieldCode" /><span asp-validation-for="FieldCode" class="validation"></span></div>
+        <div class="field"><label>Tên sân</label><input asp-for="Name" /><span asp-validation-for="Name" class="validation"></span></div>
+        <div class="field"><label>Loại sân</label>
+            <select asp-for="FieldTypeId">
+                @foreach (var type in Model.Types)
+                {
+                    <option value="@type.Id">@type.Name</option>
+                }
+            </select>
+        </div>
+        <div class="field"><label>Sức chứa</label><input asp-for="Capacity" /><span asp-validation-for="Capacity" class="validation"></span></div>
+        <div class="field"><label>Dài (m)</label><input asp-for="Length" /><span asp-validation-for="Length" class="validation"></span></div>
+        <div class="field"><label>Rộng (m)</label><input asp-for="Width" /><span asp-validation-for="Width" class="validation"></span></div>
+        <div class="field"><label>Mặt sân</label><input asp-for="SurfaceType" /></div>
+        <div class="field"><label>Giá cơ bản / giờ</label><input asp-for="BasePrice" /><span asp-validation-for="BasePrice" class="validation"></span></div>
+        <div class="field"><label>Khu vực</label><input asp-for="Area" /><span asp-validation-for="Area" class="validation"></span></div>
+        <div class="field"><label>Địa chỉ</label><input asp-for="Address" /><span asp-validation-for="Address" class="validation"></span></div>
+        <div class="field"><label>Trạng thái</label>
+            <select asp-for="Status">
+                @foreach (FieldStatus status in Enum.GetValues(typeof(FieldStatus)))
+                {
+                    <option value="@status">@status.Text()</option>
+                }
+            </select>
+        </div>
+        <div class="field full"><label>Mô tả</label><textarea asp-for="Description" rows="3"></textarea></div>
+        <div class="field"><label>Ảnh sân</label><input type="file" name="images" accept=".jpg,.jpeg,.png,.webp,.gif" multiple /></div>
+    </div>
+    <div class="d-flex flex-wrap gap-3 mt-3">
+        <label><input asp-for="HasLighting" /> Đèn</label>
+        <label><input asp-for="HasChangingRoom" /> Phòng thay đồ</label>
+        <label><input asp-for="HasToilet" /> Nhà vệ sinh</label>
+        <label><input asp-for="HasParking" /> Gửi xe</label>
+        <label><input asp-for="HasWifi" /> Wifi</label>
+        <label><input asp-for="HasWater" /> Nước uống</label>
+        <label><input asp-for="IsActive" /> Đang mở</label>
+    </div>
+    @if (Model.Images.Any())
+    {
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            @foreach (var image in Model.Images)
+            {
+                <div>
+                    <img src="@image.ImageUrl" alt="" style="width:120px;height:80px;object-fit:cover;border-radius:8px" />
+                    <button class="btn btn-line btn-sm" formaction="@Url.Action("DeleteImage", new { id = image.Id })" formmethod="post" type="submit">Xóa ảnh</button>
+                </div>
+            }
+        </div>
+    }
+    <button class="btn btn-green mt-3" type="submit">Lưu sân</button>
+    <a class="btn btn-line mt-3" asp-action="Index">Quay lại</a>
+</form>

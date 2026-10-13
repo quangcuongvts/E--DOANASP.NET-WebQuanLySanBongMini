@@ -1,0 +1,48 @@
+@model List<PriceRule>
+@{
+    ViewData["Title"] = "Bảng giá";
+    var paging = (PagingModel)ViewBag.Paging;
+    var fields = ViewBag.Fields as List<FootballField> ?? [];
+    int? fieldId = ViewBag.FieldId as int?;
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2 class="m-0">Bảng giá theo khung giờ</h2>
+    <a class="btn btn-green btn-sm" asp-action="Create">Thêm khung giá</a>
+</div>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <select name="fieldId">
+            <option value="">Tất cả sân</option>
+            @foreach (var field in fields)
+            {
+                <option value="@field.Id" selected="@(fieldId == field.Id ? "selected" : null)">@field.FieldCode - @field.Name</option>
+            }
+        </select>
+        <button class="btn btn-dark" type="submit">Lọc</button>
+    </div>
+</form>
+<div class="table-card">
+    <table>
+        <tr><th>Sân</th><th>Ngày</th><th>Khung giờ</th><th>Giá / giờ</th><th>Cao điểm</th><th>Hiệu lực</th><th></th></tr>
+        @foreach (var rule in Model)
+        {
+            <tr>
+                <td>@rule.Field?.FieldCode</td>
+                <td>@DisplayNames.DayName(rule.DayOfWeek)</td>
+                <td>@DisplayNames.Hours(rule.StartTime, rule.EndTime)</td>
+                <td>@rule.PricePerHour.VndText()</td>
+                <td>@(rule.IsPeakHour ? "Có" : "Không")</td>
+                <td>@rule.EffectiveFrom?.ToString("dd/MM/yyyy") - @(rule.EffectiveTo?.ToString("dd/MM/yyyy") ?? "Không hạn")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@rule.Id">Sửa</a>
+                    <form class="d-inline js-confirm" method="post" asp-action="Delete" data-text="Xóa khung giá này?">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@rule.Id" />
+                        <button class="btn btn-dark btn-sm" type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_Pager" model="paging" />

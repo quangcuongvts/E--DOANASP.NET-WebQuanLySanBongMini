@@ -1,0 +1,16 @@
+@model Post
+@{
+    ViewData["Title"] = "Sửa bài viết";
+}
+<h2>Sửa bài viết</h2>
+<form class="panel p-4" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Slug" />
+    <div class="field"><label>Tiêu đề</label><input asp-for="Title" /></div>
+    <div class="field mt-2"><label>Tóm tắt</label><textarea asp-for="Summary" rows="2"></textarea></div>
+    <div class="field mt-2"><label>Nội dung HTML</label><textarea asp-for="Content" rows="8"></textarea></div>
+    <div class="field mt-2"><label>Ảnh bìa mới</label><input type="file" name="thumbnail" accept=".jpg,.jpeg,.png,.webp,.gif" /></div>
+    <label class="mt-2"><input asp-for="IsPublished" /> Xuất bản</label>
+    <div><button class="btn btn-green mt-3" type="submit">Lưu</button></div>
+</form>

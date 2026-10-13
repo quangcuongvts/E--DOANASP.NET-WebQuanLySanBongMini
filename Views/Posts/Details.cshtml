@@ -1,0 +1,11 @@
+@model Post
+@{
+    ViewData["Title"] = Model.Title;
+}
+<section class="page-hero"><div class="container"><h1>@Model.Title</h1><p>@Model.PublishedAt?.ToString("dd/MM/yyyy") · @Model.Author?.FullName</p></div></section>
+<div class="container section">
+    <article class="panel p-4">
+        <p class="muted">@Model.Summary</p>
+        @Html.Raw(Model.Content)
+    </article>
+</div>

@@ -1,0 +1,45 @@
+@model CustomerDashboardViewModel
+@{
+    ViewData["Title"] = "Tài khoản của tôi";
+}
+<section class="page-hero"><div class="container"><h1>Xin chào, @Model.FullName</h1></div></section>
+<div class="container section">
+    <div class="kpi-row">
+        <div class="kpi"><span>Sắp tới</span><b>@Model.Upcoming</b></div>
+        <div class="kpi"><span>Hoàn thành</span><b>@Model.Completed</b></div>
+        <div class="kpi"><span>Đã hủy</span><b>@Model.Cancelled</b></div>
+        <div class="kpi"><span>Đã chi</span><b>@Model.TotalSpent.VndText()</b></div>
+    </div>
+    @if (Model.NextMatch != null)
+    {
+        <div class="cta mt-4">
+            <div>
+                <h3>Trận kế tiếp</h3>
+                <p>@Model.NextMatch.FieldName · @Model.NextMatch.BookingDate.ToString("dd/MM/yyyy") · @DisplayNames.Hours(Model.NextMatch.StartTime, Model.NextMatch.EndTime)</p>
+            </div>
+            <a class="btn btn-green" asp-controller="Booking" asp-action="Details" asp-route-id="@Model.NextMatch.Id">Xem đơn</a>
+        </div>
+    }
+    <div class="table-card mt-4">
+        <h3>Đơn gần đây</h3>
+        @if (!Model.Recent.Any())
+        {
+            <partial name="_Empty" model='@("Chưa có booking nào. Hãy đặt sân và bắt đầu trận đấu đầu tiên của bạn.")' />
+        }
+        else
+        {
+            <table>
+                @foreach (var item in Model.Recent)
+                {
+                    <tr>
+                        <td>@item.BookingCode</td>
+                        <td>@item.FieldName</td>
+                        <td>@item.BookingDate.ToString("dd/MM/yyyy")</td>
+                        <td><span class="status @item.Status.Css()">@item.Status.Text()</span></td>
+                        <td><a asp-controller="Booking" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a></td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</div>

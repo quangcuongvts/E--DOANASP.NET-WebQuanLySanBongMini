@@ -1,0 +1,31 @@
+@model ApplicationUser
+@{
+    ViewData["Title"] = Model.FullName;
+    var bookings = ViewBag.Bookings as List<Booking> ?? [];
+}
+<div class="panel p-4">
+    <h2>@Model.FullName</h2>
+    <p>@Model.Email · @Model.PhoneNumber · @Model.Gender.Text()</p>
+    <p>@Model.Address</p>
+    <p>Ngày sinh: @Model.DateOfBirth?.ToString("dd/MM/yyyy")</p>
+    <h3>Lịch sử đặt sân</h3>
+    @if (!bookings.Any())
+    {
+        <partial name="_Empty" model='@("Khách này chưa có booking.")' />
+    }
+    else
+    {
+        <table>
+            @foreach (var booking in bookings)
+            {
+                <tr>
+                    <td><a asp-controller="Bookings" asp-action="Details" asp-route-id="@booking.Id">@booking.BookingCode</a></td>
+                    <td>@booking.Field?.Name</td>
+                    <td>@booking.BookingDate.ToString("dd/MM/yyyy")</td>
+                    <td>@booking.TotalAmount.VndText()</td>
+                    <td><span class="status @booking.Status.Css()">@booking.Status.Text()</span></td>
+                </tr>
+            }
+        </table>
+    }
+</div>

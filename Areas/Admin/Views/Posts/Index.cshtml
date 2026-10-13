@@ -1,0 +1,31 @@
+@model List<Post>
+@{
+    ViewData["Title"] = "Bài viết";
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2 class="m-0">Bài viết</h2>
+    <a class="btn btn-green btn-sm" asp-action="Create">Viết bài</a>
+</div>
+<div class="table-card">
+    <table>
+        <tr><th>Tiêu đề</th><th>Slug</th><th>Tác giả</th><th>Xuất bản</th><th></th></tr>
+        @foreach (var post in Model)
+        {
+            <tr>
+                <td>@post.Title</td>
+                <td>@post.Slug</td>
+                <td>@post.Author?.FullName</td>
+                <td>@(post.IsPublished ? post.PublishedAt?.ToString("dd/MM/yyyy") : "Nháp")</td>
+                <td>
+                    <a asp-area="" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Slug">Xem</a>
+                    <a asp-action="Edit" asp-route-id="@post.Id">Sửa</a>
+                    <form class="d-inline js-confirm" method="post" asp-action="Delete" data-text="Xóa bài @post.Title?">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@post.Id" />
+                        <button class="btn btn-dark btn-sm" type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

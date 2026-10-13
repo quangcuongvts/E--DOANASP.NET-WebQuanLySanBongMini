@@ -1,0 +1,20 @@
+@model List<SystemSetting>
+@{
+    ViewData["Title"] = "Cấu hình";
+}
+<h2>Cấu hình hệ thống</h2>
+<form class="panel p-4" method="post">
+    @Html.AntiForgeryToken()
+    @foreach (var item in Model)
+    {
+        <div class="field mt-2">
+            <label>@item.Key</label>
+            <input name="settings[@item.Key]" value="@item.Value" />
+            @if (!string.IsNullOrEmpty(item.Description))
+            {
+                <small class="muted">@item.Description</small>
+            }
+        </div>
+    }
+    <button class="btn btn-green mt-3" type="submit">Lưu cấu hình</button>
+</form>

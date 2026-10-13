@@ -1,0 +1,30 @@
+@model List<Banner>
+@{
+    ViewData["Title"] = "Banner";
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2 class="m-0">Banner</h2>
+    <a class="btn btn-green btn-sm" asp-action="Create">Thêm banner</a>
+</div>
+<div class="table-card">
+    <table>
+        <tr><th>Ảnh</th><th>Tiêu đề</th><th>Thứ tự</th><th>Trạng thái</th><th></th></tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><img src="@item.ImageUrl" alt="" style="width:120px;height:60px;object-fit:cover;border-radius:8px" /></td>
+                <td>@item.Title<br /><small>@item.Subtitle</small></td>
+                <td>@item.SortOrder</td>
+                <td>@(item.IsActive ? "Hiện" : "Ẩn")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a>
+                    <form class="d-inline js-confirm" method="post" asp-action="Delete" data-text="Xóa banner @item.Title?">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-dark btn-sm" type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

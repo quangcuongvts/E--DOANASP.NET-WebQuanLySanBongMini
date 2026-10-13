@@ -1,0 +1,97 @@
+@model BookingDetailViewModel
+@{
+    ViewData["Title"] = Model.BookingCode;
+    var services = ViewBag.Services as List<ServiceItem> ?? new List<ServiceItem>();
+}
+<section class="page-hero"><div class="container"><h1>@Model.BookingCode</h1><p>@Model.FieldName · @Model.BookingDate.ToString("dd/MM/yyyy") · @DisplayNames.Hours(Model.StartTime, Model.EndTime)</p></div></section>
+<div class="container section detail-grid">
+    <div class="table-card">
+        <p><span class="status @Model.Status.Css()">@Model.Status.Text()</span> <span class="status @Model.PaymentStatus.Css()">@Model.PaymentStatus.Text()</span></p>
+        <div class="line"><span>Khách</span><b>@Model.CustomerName</b></div>
+        <div class="line"><span>Điện thoại</span><b>@Model.Phone</b></div>
+        <div class="line"><span>Tiền sân</span><b>@Model.OriginalAmount.VndText()</b></div>
+        @foreach (var service in Model.Services)
+        {
+            <div class="line"><span>@service.Name x@service.Quantity</span><b>@service.Total.VndText()</b></div>
+        }
+        <div class="line"><span>Dịch vụ</span><b>@Model.ServiceAmount.VndText()</b></div>
+        <div class="line"><span>Voucher @(Model.VoucherCode)</span><b>- @Model.DiscountAmount.VndText()</b></div>
+        <div class="line total-line"><span>Tổng thanh toán</span><b>@Model.TotalAmount.VndText()</b></div>
+        @if (Model.RefundPercent > 0)
+        {
+            <p>Hoàn @Model.RefundPercent% · @Model.RefundAmount.VndText()</p>
+        }
+        @if (!string.IsNullOrEmpty(Model.Note)) { <p>Ghi chú: @Model.Note</p> }
+        @if (Model.CheckInTime != null) { <p>Check-in: @Model.CheckInTime?.ToString("dd/MM/yyyy HH:mm")</p> }
+        @if (Model.CheckOutTime != null) { <p>Check-out: @Model.CheckOutTime?.ToString("dd/MM/yyyy HH:mm")</p> }
+        @if (!string.IsNullOrEmpty(Model.CancellationReason))
+        {
+            <p>Hủy lúc @Model.CancelledAt?.ToString("dd/MM/yyyy HH:mm") bởi @Model.CancelledByName. Lý do: @Model.CancellationReason</p>
+        }
+        <div class="d-flex gap-2 flex-wrap mt-3 no-print">
+            @if (Model.CanPay)
+            {
+                <a class="btn btn-green" asp-action="Payment" asp-route-id="@Model.Id">Thanh toán</a>
+            }
+            @if (Model.CanReschedule)
+            {
+                <a class="btn btn-line" asp-action="Reschedule" asp-route-id="@Model.Id">Đổi lịch</a>
+            }
+            <a class="btn btn-line" asp-action="Invoice" asp-route-id="@Model.Id">In hóa đơn</a>
+            @if (Model.CanReview)
+            {
+                <a class="btn btn-dark" asp-controller="Reviews" asp-action="Create" asp-route-bookingId="@Model.Id">Đánh giá</a>
+            }
+        </div>
+        @if (Model.CanCancel)
+        {
+            <form class="mt-3 js-confirm" method="post" asp-action="Cancel" data-text="Bạn có chắc chắn muốn hủy booking @Model.BookingCode?">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <label>Lý do hủy</label>
+                <textarea name="Reason" required></textarea>
+                <button class="btn btn-danger mt-2" type="submit">Hủy booking</button>
+            </form>
+        }
+        @if (Model.Review != null)
+        {
+            <div class="review-card mt-3">
+                <span class="stars">@(new string('★', Model.Review.Rating))</span>
+                <p>@Model.Review.Comment</p>
+                @if (Model.Review.CanEdit)
+                {
+                    <a asp-controller="Reviews" asp-action="Edit" asp-route-id="@Model.Review.Id">Sửa đánh giá</a>
+                    <form method="post" asp-controller="Reviews" asp-action="Delete" asp-route-id="@Model.Review.Id" class="js-confirm d-inline" data-text="Xóa đánh giá này?">
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-line btn-sm" type="submit">Xóa</button>
+                    </form>
+                }
+            </div>
+        }
+    </div>
+    <div>
+        @if (Model.IsStaffView && services.Count > 0 && Model.Status is not (BookingStatus.Cancelled or BookingStatus.Completed or BookingStatus.NoShow))
+        {
+            <form class="panel p-3 mb-3" method="post" asp-area="Admin" asp-controller="Bookings" asp-action="AddService">
+                @Html.AntiForgeryToken()
+                <h3>Thêm dịch vụ</h3>
+                <input type="hidden" name="BookingId" value="@Model.Id" />
+                <select name="ServiceId">
+                    @foreach (var service in services)
+                    {
+                        <option value="@service.Id">@service.Name - @service.Price.VndText()</option>
+                    }
+                </select>
+                <input type="number" name="Quantity" value="1" min="1" />
+                <button class="btn btn-dark mt-2" type="submit">Thêm</button>
+            </form>
+        }
+        <div class="panel p-3">
+            <h3>Giao dịch</h3>
+            @foreach (var payment in Model.Payments)
+            {
+                <p>@payment.PaymentCode · @payment.Amount.VndText() · @payment.PaymentMethod.Text() · @payment.PaymentStatus.Text()</p>
+            }
+        </div>
+    </div>
+</div>

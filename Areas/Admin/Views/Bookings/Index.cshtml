@@ -1,0 +1,64 @@
+@model BookingListViewModel
+@{
+    ViewData["Title"] = "Booking";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Đơn đặt sân</h2>
+    <a class="btn btn-green btn-sm" asp-action="Create">Tạo booking tại quầy</a>
+</div>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input name="q" value="@Model.Keyword" placeholder="Mã đơn, tên, số điện thoại" />
+        <select name="status">
+            <option value="">Mọi trạng thái</option>
+            @foreach (BookingStatus status in Enum.GetValues(typeof(BookingStatus)))
+            {
+                <option value="@status" selected="@(Model.Status == status ? "selected" : null)">@status.Text()</option>
+            }
+        </select>
+        <select name="payment">
+            <option value="">Mọi thanh toán</option>
+            @foreach (PaymentStatus status in Enum.GetValues(typeof(PaymentStatus)))
+            {
+                <option value="@status" selected="@(Model.PaymentStatus == status ? "selected" : null)">@status.Text()</option>
+            }
+        </select>
+        <select name="fieldId">
+            <option value="">Mọi sân</option>
+            @foreach (var field in Model.Fields)
+            {
+                <option value="@field.Id" selected="@(Model.FieldId == field.Id ? "selected" : null)">@field.FieldCode - @field.Name</option>
+            }
+        </select>
+        <input type="date" name="from" value="@Model.From?.ToString("yyyy-MM-dd")" />
+        <input type="date" name="to" value="@Model.To?.ToString("yyyy-MM-dd")" />
+        <button class="btn btn-dark" type="submit">Lọc</button>
+    </div>
+</form>
+@if (!Model.Items.Any())
+{
+    <partial name="_Empty" model='@("Chưa có booking nào phù hợp bộ lọc.")' />
+}
+else
+{
+    <div class="table-card">
+        <table>
+            <tr><th>Mã</th><th>Sân</th><th>Khách</th><th>Ngày</th><th>Giờ</th><th>Tổng tiền</th><th>Thanh toán</th><th>Trạng thái</th><th></th></tr>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.BookingCode</td>
+                    <td>@item.FieldName</td>
+                    <td>@item.CustomerName<br /><small>@item.Phone</small></td>
+                    <td>@item.BookingDate.ToString("dd/MM/yyyy")</td>
+                    <td>@DisplayNames.Hours(item.StartTime, item.EndTime)</td>
+                    <td>@item.TotalAmount.VndText()</td>
+                    <td><span class="status @item.PaymentStatus.Css()">@item.PaymentStatus.Text()</span></td>
+                    <td><span class="status @item.Status.Css()">@item.Status.Text()</span></td>
+                    <td><a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <partial name="_Pager" model="Model.Paging" />
+}

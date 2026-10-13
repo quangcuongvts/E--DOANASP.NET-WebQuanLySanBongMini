@@ -1,0 +1,37 @@
+@model List<ContactMessage>
+@{
+    ViewData["Title"] = "Liên hệ";
+    var paging = (PagingModel)ViewBag.Paging;
+    ContactStatus? status = ViewBag.Status as ContactStatus?;
+}
+<h2>Liên hệ</h2>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <select name="status">
+            <option value="">Tất cả</option>
+            @foreach (ContactStatus item in Enum.GetValues(typeof(ContactStatus)))
+            {
+                <option value="@item" selected="@(status == item ? "selected" : null)">@item.Text()</option>
+            }
+        </select>
+        <button class="btn btn-dark" type="submit">Lọc</button>
+    </div>
+</form>
+<div class="table-card">
+    <table>
+        <tr><th>Họ tên</th><th>Email</th><th>Điện thoại</th><th>Tiêu đề</th><th>Trạng thái</th><th>Ngày</th><th></th></tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FullName</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>@item.Subject</td>
+                <td>@item.Status.Text()</td>
+                <td>@item.CreatedAt.ToString("dd/MM/yyyy")</td>
+                <td><a asp-action="Details" asp-route-id="@item.Id">Xem</a></td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_Pager" model="paging" />

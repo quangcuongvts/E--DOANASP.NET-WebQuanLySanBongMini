@@ -1,0 +1,21 @@
+@model ContactFormViewModel
+@{
+    ViewData["Title"] = "Liên hệ";
+    var settings = ViewBag.Settings as Dictionary<string, string> ?? new();
+}
+<section class="page-hero"><div class="container"><h1>Liên hệ</h1><p>@settings.GetValueOrDefault("Address") · @settings.GetValueOrDefault("Hotline")</p></div></section>
+<div class="container section">
+    <form class="panel p-4" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation"></div>
+        <div class="search-grid">
+            <div class="field"><label>Họ tên</label><input asp-for="FullName" /><span asp-validation-for="FullName" class="validation"></span></div>
+            <div class="field"><label>Email</label><input asp-for="Email" /><span asp-validation-for="Email" class="validation"></span></div>
+            <div class="field"><label>Số điện thoại</label><input asp-for="Phone" /><span asp-validation-for="Phone" class="validation"></span></div>
+            <div class="field"><label>Tiêu đề</label><input asp-for="Subject" /><span asp-validation-for="Subject" class="validation"></span></div>
+            <div class="field full"><label>Nội dung</label><textarea asp-for="Message" rows="5"></textarea><span asp-validation-for="Message" class="validation"></span></div>
+        </div>
+        <button class="btn btn-green mt-3" type="submit">Gửi liên hệ</button>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

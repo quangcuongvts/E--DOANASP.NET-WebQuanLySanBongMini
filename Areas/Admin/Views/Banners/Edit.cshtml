@@ -1,0 +1,18 @@
+@model Banner
+@{
+    ViewData["Title"] = "Sửa banner";
+}
+<h2>Sửa banner</h2>
+<form class="panel p-4" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <div class="field"><label>Tiêu đề</label><input asp-for="Title" /></div>
+    <div class="field mt-2"><label>Phụ đề</label><input asp-for="Subtitle" /></div>
+    <div class="field mt-2"><label>Đường dẫn ảnh</label><input asp-for="ImageUrl" /></div>
+    <img src="@Model.ImageUrl" alt="" style="width:180px;border-radius:8px" />
+    <div class="field mt-2"><label>Ảnh mới</label><input type="file" name="image" accept=".jpg,.jpeg,.png,.webp,.gif" /></div>
+    <div class="field mt-2"><label>Liên kết</label><input asp-for="LinkUrl" /></div>
+    <div class="field mt-2"><label>Thứ tự</label><input asp-for="SortOrder" /></div>
+    <label class="mt-2"><input asp-for="IsActive" /> Hiển thị</label>
+    <div><button class="btn btn-green mt-3" type="submit">Lưu</button></div>
+</form>

@@ -1,0 +1,37 @@
+@model RolePageViewModel
+@{
+    ViewData["Title"] = "Phân quyền";
+}
+<h2>Vai trò hệ thống</h2>
+<div class="kpi-grid">
+    @foreach (var role in Model.Roles)
+    {
+        <div class="kpi-card"><span>@role.Name</span><strong>@role.Count</strong></div>
+    }
+</div>
+<div class="table-card mt-3">
+    <table>
+        <tr><th>Họ tên</th><th>Email</th><th>Vai trò hiện tại</th><th>Gán vai trò</th></tr>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>
+                    <form class="d-flex gap-2" method="post" asp-action="Assign">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <select name="role">
+                            @foreach (var role in new[] { "Admin", "Manager", "Staff", "Customer" })
+                            {
+                                <option selected="@(user.Role == role ? "selected" : null)">@role</option>
+                            }
+                        </select>
+                        <button class="btn btn-dark btn-sm" type="submit">Gán</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

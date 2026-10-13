@@ -1,0 +1,22 @@
+@model List<Post>
+@{
+    ViewData["Title"] = "Bài viết";
+}
+<section class="page-hero"><div class="container"><h1>Bài viết</h1></div></section>
+<div class="container section">
+    @if (!Model.Any())
+    {
+        <partial name="_Empty" model='@("Chưa có bài viết.")' />
+    }
+    <div class="card-grid">
+        @foreach (var post in Model)
+        {
+            <a class="post-card" asp-action="Details" asp-route-id="@post.Slug">
+                <h3>@post.Title</h3>
+                <p class="muted">@post.Summary</p>
+                <small>@post.PublishedAt?.ToString("dd/MM/yyyy")</small>
+            </a>
+        }
+    </div>
+    <partial name="_Pager" model="(PagingModel)ViewBag.Paging" />
+</div>

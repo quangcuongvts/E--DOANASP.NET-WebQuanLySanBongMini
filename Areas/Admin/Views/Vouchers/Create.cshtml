@@ -1,0 +1,30 @@
+@model Voucher
+@{
+    ViewData["Title"] = "Tạo voucher";
+}
+<h2>Tạo voucher</h2>
+<form class="panel p-4" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="validation"></div>
+    <div class="search-grid">
+        <div class="field"><label>Mã</label><input asp-for="VoucherCode" /><span asp-validation-for="VoucherCode" class="validation"></span></div>
+        <div class="field"><label>Tên</label><input asp-for="Name" /><span asp-validation-for="Name" class="validation"></span></div>
+        <div class="field"><label>Loại giảm</label>
+            <select asp-for="DiscountType">
+                <option value="@DiscountType.FixedAmount">Số tiền</option>
+                <option value="@DiscountType.Percentage">Phần trăm</option>
+            </select>
+        </div>
+        <div class="field"><label>Giá trị</label><input asp-for="DiscountValue" /></div>
+        <div class="field"><label>Đơn tối thiểu</label><input asp-for="MinOrderAmount" /></div>
+        <div class="field"><label>Giảm tối đa</label><input asp-for="MaxDiscountAmount" /></div>
+        <div class="field"><label>Bắt đầu</label><input asp-for="StartDate" type="datetime-local" /></div>
+        <div class="field"><label>Kết thúc</label><input asp-for="EndDate" type="datetime-local" /><span asp-validation-for="EndDate" class="validation"></span></div>
+        <div class="field"><label>Giới hạn lượt</label><input asp-for="UsageLimit" /></div>
+        <div class="field"><label>Lượt / khách</label><input asp-for="MaxUsagePerUser" /></div>
+        <div class="field full"><label>Mô tả</label><textarea asp-for="Description" rows="3"></textarea></div>
+    </div>
+    <label class="mt-2"><input asp-for="IsActive" /> Đang áp dụng</label>
+    <div><button class="btn btn-green mt-3" type="submit">Lưu</button></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

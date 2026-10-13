@@ -1,0 +1,36 @@
+@model List<ApplicationUser>
+@{
+    ViewData["Title"] = "Khách hàng";
+    var paging = (PagingModel)ViewBag.Paging;
+}
+<h2>Khách hàng</h2>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input name="q" value="@ViewBag.Keyword" placeholder="Tên, email, số điện thoại" />
+        <button class="btn btn-dark" type="submit">Tìm</button>
+    </div>
+</form>
+@if (!Model.Any())
+{
+    <partial name="_Empty" model='@("Chưa có khách hàng.")' />
+}
+else
+{
+    <div class="table-card">
+        <table>
+            <tr><th>Họ tên</th><th>Email</th><th>Điện thoại</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>@(user.IsActive ? "Hoạt động" : "Đã khóa")</td>
+                    <td>@user.CreatedAt.ToString("dd/MM/yyyy")</td>
+                    <td><a asp-action="Details" asp-route-id="@user.Id">Chi tiết</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <partial name="_Pager" model="paging" />
+}

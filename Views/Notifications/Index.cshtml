@@ -1,0 +1,33 @@
+@model List<NotificationItemViewModel>
+@{
+    ViewData["Title"] = "Thông báo";
+}
+<section class="page-hero"><div class="container"><h1>Thông báo</h1></div></section>
+<div class="container section">
+    <form method="post" asp-action="MarkAll">@Html.AntiForgeryToken()<button class="btn btn-line btn-sm" type="submit">Đánh dấu đã đọc</button></form>
+    @if (!Model.Any())
+    {
+        <partial name="_Empty" model='@("Chưa có thông báo.")' />
+    }
+    @foreach (var item in Model)
+    {
+        <div class="panel p-3 mb-2">
+            <strong>@item.Title</strong>
+            <span class="status @(item.IsRead ? "st-completed" : "st-pending")">@(item.IsRead ? "Đã đọc" : "Mới")</span>
+            <p>@item.Message</p>
+            <small class="muted">@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+            @if (!string.IsNullOrEmpty(item.Link))
+            {
+                <div><a href="@item.Link">Mở</a></div>
+            }
+            @if (!item.IsRead)
+            {
+                <form method="post" asp-action="MarkRead">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@item.Id" />
+                    <button class="btn btn-line btn-sm" type="submit">Đã đọc</button>
+                </form>
+            }
+        </div>
+    }
+</div>

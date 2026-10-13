@@ -1,0 +1,168 @@
+@model BookingDetailViewModel
+@{
+    ViewData["Title"] = Model.BookingCode;
+    var services = ViewBag.Services as List<ServiceItem> ?? [];
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="m-0">@Model.BookingCode</h2>
+        <span class="status @Model.Status.Css()">@Model.Status.Text()</span>
+        <span class="status @Model.PaymentStatus.Css()">@Model.PaymentStatus.Text()</span>
+    </div>
+    <a class="btn btn-line btn-sm" asp-action="Index">Danh sách</a>
+</div>
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="panel p-4">
+            <p><b>Khách:</b> @Model.CustomerName · @Model.Phone · @Model.Email</p>
+            <p><b>Sân:</b> @Model.FieldCode - @Model.FieldName (@Model.Area)</p>
+            <p><b>Lịch:</b> @Model.BookingDate.ToString("dd/MM/yyyy") · @DisplayNames.Hours(Model.StartTime, Model.EndTime)</p>
+            <p><b>Ghi chú:</b> @(Model.Note ?? "Không")</p>
+            @if (Model.CheckInTime != null)
+            {
+                <p><b>Check-in:</b> @Model.CheckInTime.Value.ToString("dd/MM/yyyy HH:mm") · @Model.StaffName<br />@Model.CheckInNote</p>
+            }
+            @if (Model.CheckOutTime != null)
+            {
+                <p><b>Check-out:</b> @Model.CheckOutTime.Value.ToString("dd/MM/yyyy HH:mm")</p>
+            }
+            @if (!string.IsNullOrEmpty(Model.CancellationReason))
+            {
+                <p><b>Hủy:</b> @Model.CancellationReason · @Model.CancelledByName · @Model.CancelledAt?.ToString("dd/MM/yyyy HH:mm") · hoàn @Model.RefundPercent% (@Model.RefundAmount.VndText())</p>
+            }
+            <h3>Dịch vụ</h3>
+            @if (!Model.Services.Any())
+            {
+                <p class="muted">Chưa có dịch vụ.</p>
+            }
+            else
+            {
+                @foreach (var line in Model.Services)
+                {
+                    <div class="line"><span>@line.Name x @line.Quantity</span><b>@line.Total.VndText()</b></div>
+                }
+            }
+        </div>
+        <div class="panel p-4 mt-3">
+            <h3>Giao dịch</h3>
+            @if (!Model.Payments.Any())
+            {
+                <p class="muted">Chưa có giao dịch.</p>
+            }
+            else
+            {
+                <table>
+                    @foreach (var payment in Model.Payments)
+                    {
+                        <tr>
+                            <td>@payment.PaymentCode</td>
+                            <td>@payment.PaymentMethod.Text()</td>
+                            <td>@payment.Amount.VndText()</td>
+                            <td><span class="status @payment.PaymentStatus.Css()">@payment.PaymentStatus.Text()</span></td>
+                            <td>@payment.PaymentDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="summary-card">
+            <div class="line"><span>Tiền sân</span><b>@Model.OriginalAmount.VndText()</b></div>
+            <div class="line"><span>Dịch vụ</span><b>@Model.ServiceAmount.VndText()</b></div>
+            <div class="line"><span>Voucher @(Model.VoucherCode)</span><b>- @Model.DiscountAmount.VndText()</b></div>
+            <div class="line total-line"><span>Tổng</span><b>@Model.TotalAmount.VndText()</b></div>
+            <a class="btn btn-line w-100 mt-2" asp-area="" asp-controller="Booking" asp-action="Invoice" asp-route-id="@Model.Id">In hóa đơn</a>
+        </div>
+        @if (Model.Status == BookingStatus.Confirmed)
+        {
+            <form class="panel p-3 mt-3" method="post" asp-action="CheckIn">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <h3>Check-in</h3>
+                <textarea name="Note" class="w-100" rows="2" placeholder="Ghi chú"></textarea>
+                <button class="btn btn-green w-100 mt-2" type="submit">Xác nhận check-in</button>
+            </form>
+        }
+        @if (Model.Status == BookingStatus.CheckedIn)
+        {
+            <form class="mt-3" method="post" asp-action="Start">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button class="btn btn-dark w-100" type="submit">Bắt đầu trận</button>
+            </form>
+        }
+        @if (Model.Status is BookingStatus.CheckedIn or BookingStatus.Playing)
+        {
+            <form class="panel p-3 mt-3" method="post" asp-action="CheckOut">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <h3>Check-out</h3>
+                <label><input type="checkbox" name="confirmPayment" value="true" checked /> Xác nhận thu đủ tiền</label>
+                <select class="mt-2 w-100" name="method">
+                    @foreach (PaymentMethod method in Enum.GetValues(typeof(PaymentMethod)))
+                    {
+                        <option value="@method">@method.Text()</option>
+                    }
+                </select>
+                <button class="btn btn-green w-100 mt-2" type="submit">Hoàn thành trận</button>
+            </form>
+        }
+        @if (Model.PaymentStatus != PaymentStatus.Paid && Model.Status is not BookingStatus.Cancelled and not BookingStatus.Completed)
+        {
+            <form class="panel p-3 mt-3" method="post" asp-action="ConfirmPayment">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <h3>Xác nhận thanh toán</h3>
+                <select class="w-100" name="method">
+                    @foreach (PaymentMethod method in Enum.GetValues(typeof(PaymentMethod)))
+                    {
+                        <option value="@method">@method.Text()</option>
+                    }
+                </select>
+                <button class="btn btn-dark w-100 mt-2" type="submit">Ghi nhận đã thu</button>
+            </form>
+        }
+        @if (Model.Status is BookingStatus.Pending or BookingStatus.Confirmed or BookingStatus.CheckedIn)
+        {
+            <form class="panel p-3 mt-3" method="post" asp-action="AddService">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="BookingId" value="@Model.Id" />
+                <h3>Thêm dịch vụ</h3>
+                <select class="w-100" name="ServiceId">
+                    @foreach (var service in services)
+                    {
+                        <option value="@service.Id">@service.Name - @service.Price.VndText()</option>
+                    }
+                </select>
+                <input class="mt-2 w-100" type="number" name="Quantity" min="1" max="20" value="1" />
+                <button class="btn btn-line w-100 mt-2" type="submit">Thêm</button>
+            </form>
+        }
+        @if (Model.Status is BookingStatus.Pending or BookingStatus.Confirmed)
+        {
+            <form class="panel p-3 mt-3 js-confirm" method="post" asp-action="Cancel" data-title="Hủy booking" data-text="Bạn có chắc chắn muốn hủy booking @Model.BookingCode?">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <h3>Hủy đơn</h3>
+                <textarea class="w-100" name="Reason" rows="2" required placeholder="Lý do hủy"></textarea>
+                <button class="btn btn-dark w-100 mt-2" type="submit">Hủy booking</button>
+            </form>
+        }
+        @if (Model.Status is BookingStatus.Pending or BookingStatus.Confirmed or BookingStatus.CheckedIn or BookingStatus.Playing)
+        {
+            <form class="panel p-3 mt-3" method="post" asp-action="UpdateStatus">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <h3>Đổi trạng thái</h3>
+                <select class="w-100" name="status">
+                    @foreach (BookingStatus status in Enum.GetValues(typeof(BookingStatus)))
+                    {
+                        <option value="@status" selected="@(status == Model.Status ? "selected" : null)">@status.Text()</option>
+                    }
+                </select>
+                <button class="btn btn-line w-100 mt-2" type="submit">Cập nhật</button>
+            </form>
+        }
+    </div>
+</div>

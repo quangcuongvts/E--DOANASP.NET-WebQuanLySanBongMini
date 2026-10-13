@@ -1,0 +1,19 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+<div class="auth-wrap">
+    <form class="auth-card" method="post">
+        @Html.AntiForgeryToken()
+        <img class="auth-logo" src="~/images/logo-mark.png" alt="Mini Football Booking" />
+        <h2>Đăng nhập</h2>
+        <div asp-validation-summary="ModelOnly" class="validation"></div>
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div class="field"><label>Email</label><input asp-for="Email" /><span asp-validation-for="Email" class="validation"></span></div>
+        <div class="field mt-2"><label>Mật khẩu</label><input asp-for="Password" /><span asp-validation-for="Password" class="validation"></span></div>
+        <label class="mt-2"><input asp-for="RememberMe" /> Ghi nhớ đăng nhập</label>
+        <button class="btn btn-green w-100 mt-3" type="submit">Đăng nhập</button>
+        <p class="mt-3"><a asp-action="ForgotPassword">Quên mật khẩu</a> · <a asp-action="Register">Đăng ký</a></p>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

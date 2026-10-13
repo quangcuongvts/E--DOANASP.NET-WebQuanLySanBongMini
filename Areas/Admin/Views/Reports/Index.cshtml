@@ -1,0 +1,105 @@
+@model ReportViewModel
+@using System.Text.Json
+@using System.Text.Encodings.Web
+@{
+    ViewData["Title"] = Model.Focus switch
+    {
+        "booking" => "Báo cáo booking",
+        "customer" => "Báo cáo khách hàng",
+        "performance" => "Hiệu suất sân",
+        _ => "Báo cáo doanh thu"
+    };
+    var json = new JsonSerializerOptions { Encoder = JavaScriptEncoder.Default };
+}
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input type="date" name="from" value="@Model.From.ToString("yyyy-MM-dd")" />
+        <input type="date" name="to" value="@Model.To.ToString("yyyy-MM-dd")" />
+        <select name="fieldId">
+            <option value="">Mọi sân</option>
+            @foreach (var field in Model.Fields)
+            {
+                <option value="@field.Id" selected="@(Model.FieldId == field.Id ? "selected" : null)">@field.Name</option>
+            }
+        </select>
+        <select name="typeId">
+            <option value="">Mọi loại sân</option>
+            @foreach (var type in Model.Types)
+            {
+                <option value="@type.Id" selected="@(Model.FieldTypeId == type.Id ? "selected" : null)">@type.Name</option>
+            }
+        </select>
+        <button class="btn btn-dark" type="submit">Xem báo cáo</button>
+        <a class="btn btn-line" asp-action="Export" asp-route-from="@Model.From.ToString("yyyy-MM-dd")" asp-route-to="@Model.To.ToString("yyyy-MM-dd")" asp-route-fieldId="@Model.FieldId" asp-route-typeId="@Model.FieldTypeId">Xuất CSV</a>
+    </div>
+</form>
+<div class="kpi-grid">
+    <div class="kpi-card"><span>Tổng booking</span><strong>@Model.TotalBookings</strong></div>
+    <div class="kpi-card"><span>Hoàn thành</span><strong>@Model.CompletedBookings</strong></div>
+    <div class="kpi-card"><span>Đã hủy</span><strong>@Model.CancelledBookings</strong></div>
+    <div class="kpi-card"><span>Doanh thu</span><strong>@Model.Revenue.VndText()</strong></div>
+    <div class="kpi-card"><span>Giá trị trung bình</span><strong>@Model.AverageBookingValue.VndText()</strong></div>
+    <div class="kpi-card"><span>Tỷ lệ hủy</span><strong>@Model.CancelRate.ToString("0.0")%</strong></div>
+    <div class="kpi-card"><span>Tỷ lệ lấp đầy</span><strong>@Model.FillRate.ToString("0.0")%</strong></div>
+    <div class="kpi-card"><span>Khách mới</span><strong>@Model.NewCustomers</strong></div>
+</div>
+<div class="chart-card mt-3">
+    <h3>Doanh thu theo ngày</h3>
+    <canvas id="reportChart"></canvas>
+</div>
+<div class="row g-3 mt-1">
+    <div class="col-md-4">
+        <div class="panel p-3">
+            <h3>Sân phổ biến</h3>
+            @foreach (var item in Model.PopularFields) { <div class="line"><span>@item.Name</span><b>@item.Count</b></div> }
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel p-3">
+            <h3>Khung giờ phổ biến</h3>
+            @foreach (var item in Model.PopularHours) { <div class="line"><span>@item.Name</span><b>@item.Count</b></div> }
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel p-3">
+            <h3>Dịch vụ bán chạy</h3>
+            @foreach (var item in Model.PopularServices) { <div class="line"><span>@item.Name</span><b>@item.Amount.VndText()</b></div> }
+        </div>
+    </div>
+</div>
+<div class="table-card mt-3">
+    <h3>Khách hàng nổi bật</h3>
+    @foreach (var item in Model.TopCustomers)
+    {
+        <div class="line"><span>@item.Name</span><b>@item.Count đơn · @item.Amount.VndText()</b></div>
+    }
+</div>
+<div class="table-card mt-3">
+    <table>
+        <tr><th>Mã</th><th>Sân</th><th>Khách</th><th>Ngày</th><th>Giờ</th><th>Tổng</th><th>Trạng thái</th></tr>
+        @foreach (var item in Model.Bookings)
+        {
+            <tr>
+                <td><a asp-controller="Bookings" asp-action="Details" asp-route-id="@item.Id">@item.BookingCode</a></td>
+                <td>@item.FieldName</td>
+                <td>@item.CustomerName</td>
+                <td>@item.BookingDate.ToString("dd/MM/yyyy")</td>
+                <td>@DisplayNames.Hours(item.StartTime, item.EndTime)</td>
+                <td>@item.TotalAmount.VndText()</td>
+                <td><span class="status @item.Status.Css()">@item.Status.Text()</span></td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_Pager" model="Model.Paging" />
+@section Scripts {
+<script>
+new Chart(document.getElementById('reportChart'), {
+  type: 'bar',
+  data: {
+    labels: @Html.Raw(JsonSerializer.Serialize(Model.RevenueLabels, json)),
+    datasets: [{ label: 'Doanh thu', data: @Html.Raw(JsonSerializer.Serialize(Model.RevenueSeries, json)), backgroundColor: '#00C853' }]
+  }
+});
+</script>
+}

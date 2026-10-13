@@ -1,0 +1,47 @@
+@model List<Payment>
+@{
+    ViewData["Title"] = "Thanh toán";
+    var paging = (PagingModel)ViewBag.Paging;
+    PaymentStatus? status = ViewBag.Status as PaymentStatus?;
+    PaymentMethod? method = ViewBag.Method as PaymentMethod?;
+}
+<h2>Giao dịch thanh toán</h2>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input name="q" value="@ViewBag.Keyword" placeholder="Mã giao dịch hoặc mã booking" />
+        <select name="status">
+            <option value="">Mọi trạng thái</option>
+            @foreach (PaymentStatus item in Enum.GetValues(typeof(PaymentStatus)))
+            {
+                <option value="@item" selected="@(status == item ? "selected" : null)">@item.Text()</option>
+            }
+        </select>
+        <select name="method">
+            <option value="">Mọi hình thức</option>
+            @foreach (PaymentMethod item in Enum.GetValues(typeof(PaymentMethod)))
+            {
+                <option value="@item" selected="@(method == item ? "selected" : null)">@item.Text()</option>
+            }
+        </select>
+        <button class="btn btn-dark" type="submit">Lọc</button>
+    </div>
+</form>
+<div class="table-card">
+    <table>
+        <tr><th>Mã</th><th>Booking</th><th>Khách</th><th>Số tiền</th><th>Hình thức</th><th>Trạng thái</th><th>Thời gian</th><th></th></tr>
+        @foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.PaymentCode</td>
+                <td>@payment.Booking?.BookingCode</td>
+                <td>@payment.Booking?.Customer?.FullName</td>
+                <td>@payment.Amount.VndText()</td>
+                <td>@payment.PaymentMethod.Text()</td>
+                <td><span class="status @payment.PaymentStatus.Css()">@payment.PaymentStatus.Text()</span></td>
+                <td>@payment.PaymentDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                <td><a asp-action="Details" asp-route-id="@payment.Id">Chi tiết</a></td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_Pager" model="paging" />

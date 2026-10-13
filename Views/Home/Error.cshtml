@@ -1,0 +1,15 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Lỗi hệ thống";
+}
+<div class="auth-wrap">
+    <div class="auth-card text-center">
+        <h1>500</h1>
+        <p>Đã có lỗi trong quá trình xử lý.</p>
+        @if (Model.ShowRequestId)
+        {
+            <p class="muted">Mã yêu cầu: @Model.RequestId</p>
+        }
+        <a class="btn btn-green" asp-action="Index">Về trang chủ</a>
+    </div>
+</div>

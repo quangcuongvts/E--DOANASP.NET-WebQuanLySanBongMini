@@ -1,0 +1,45 @@
+@model FootballField
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div class="panel p-4">
+    <div class="d-flex justify-content-between">
+        <h2>@Model.FieldCode - @Model.Name</h2>
+        <span class="status @Model.Status.Css()">@Model.Status.Text()</span>
+    </div>
+    <p>@Model.FieldType?.Name · @Model.Capacity người · @Model.Length m x @Model.Width m · @Model.SurfaceType</p>
+    <p>@Model.Address · @Model.Area</p>
+    <p>Giá cơ bản: <b>@Model.BasePrice.VndText()/h</b> · Đánh giá @Model.RatingAverage.ToString("0.0")</p>
+    <p>@Model.Description</p>
+    <p>
+        @(Model.HasLighting ? "Đèn · " : "")
+        @(Model.HasChangingRoom ? "Phòng thay đồ · " : "")
+        @(Model.HasToilet ? "WC · " : "")
+        @(Model.HasParking ? "Gửi xe · " : "")
+        @(Model.HasWifi ? "Wifi · " : "")
+        @(Model.HasWater ? "Nước" : "")
+    </p>
+    <div class="d-flex flex-wrap gap-2">
+        @foreach (var image in Model.Images.OrderBy(i => i.SortOrder))
+        {
+            <img src="@image.ImageUrl" alt="" style="width:160px;height:110px;object-fit:cover;border-radius:10px" />
+        }
+    </div>
+    <h3 class="mt-4">Bảng giá</h3>
+    <table>
+        @foreach (var rule in Model.PriceRules.OrderBy(r => r.DayOfWeek).ThenBy(r => r.StartTime))
+        {
+            <tr>
+                <td>@DisplayNames.DayName(rule.DayOfWeek)</td>
+                <td>@DisplayNames.Hours(rule.StartTime, rule.EndTime)</td>
+                <td>@rule.PricePerHour.VndText()</td>
+                <td>@(rule.IsPeakHour ? "Cao điểm" : "Thường")</td>
+            </tr>
+        }
+    </table>
+    <a class="btn btn-line mt-3" asp-action="Index">Quay lại</a>
+    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    {
+        <a class="btn btn-green mt-3" asp-action="Edit" asp-route-id="@Model.Id">Sửa</a>
+    }
+</div>

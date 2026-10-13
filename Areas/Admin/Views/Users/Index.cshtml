@@ -1,0 +1,62 @@
+@model UserListViewModel
+@{
+    ViewData["Title"] = "Người dùng";
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2 class="m-0">Người dùng</h2>
+    <a class="btn btn-green btn-sm" asp-action="Create">Tạo tài khoản</a>
+</div>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input name="q" value="@Model.Keyword" placeholder="Tên, email, điện thoại" />
+        <select name="role">
+            <option value="">Mọi vai trò</option>
+            @foreach (var role in new[] { "Admin", "Manager", "Staff", "Customer" })
+            {
+                <option value="@role" selected="@(Model.Role == role ? "selected" : null)">@role</option>
+            }
+        </select>
+        <select name="status">
+            <option value="">Mọi trạng thái</option>
+            <option value="active" selected="@(Model.Status == "active" ? "selected" : null)">Hoạt động</option>
+            <option value="locked" selected="@(Model.Status == "locked" ? "selected" : null)">Đã khóa</option>
+        </select>
+        <button class="btn btn-dark" type="submit">Lọc</button>
+    </div>
+</form>
+<div class="table-card">
+    <table>
+        <tr><th>Avatar</th><th>Họ tên</th><th>Email</th><th>Điện thoại</th><th>Vai trò</th><th>Trạng thái</th><th></th></tr>
+        @foreach (var user in Model.Items)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(user.AvatarUrl))
+                    {
+                        <img class="avatar" src="@user.AvatarUrl" alt="" />
+                    }
+                    else
+                    {
+                        <span class="avatar">@TextHelper.Initials(user.FullName)</span>
+                    }
+                </td>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+                <td>@user.Role</td>
+                <td>@(user.IsActive ? "Hoạt động" : "Đã khóa")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@user.Id">Xem</a>
+                    <a asp-action="Edit" asp-route-id="@user.Id">Sửa</a>
+                    <form class="d-inline js-confirm" method="post" asp-action="Lock" data-text="@(user.IsActive ? "Khóa tài khoản " + user.FullName + "?" : "Mở khóa " + user.FullName + "?")">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@user.Id" />
+                        <input type="hidden" name="unlock" value="@(!user.IsActive)" />
+                        <button class="btn btn-dark btn-sm" type="submit">@(user.IsActive ? "Khóa" : "Mở khóa")</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_Pager" model="Model.Paging" />

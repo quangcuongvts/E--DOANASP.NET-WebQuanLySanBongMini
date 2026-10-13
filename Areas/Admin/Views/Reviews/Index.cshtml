@@ -1,0 +1,45 @@
+@model List<Review>
+@{
+    ViewData["Title"] = "Đánh giá";
+    var paging = (PagingModel)ViewBag.Paging;
+    int? rating = ViewBag.Rating as int?;
+}
+<h2>Đánh giá sân</h2>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input name="q" value="@ViewBag.Keyword" placeholder="Nội dung, khách, sân" />
+        <select name="rating">
+            <option value="">Mọi số sao</option>
+            @for (var star = 1; star <= 5; star++)
+            {
+                <option value="@star" selected="@(rating == star ? "selected" : null)">@star sao</option>
+            }
+        </select>
+        <button class="btn btn-dark" type="submit">Lọc</button>
+    </div>
+</form>
+<div class="table-card">
+    <table>
+        <tr><th>Khách</th><th>Sân</th><th>Sao</th><th>Nội dung</th><th>Ngày</th><th>Hiển thị</th><th></th></tr>
+        @foreach (var review in Model)
+        {
+            <tr>
+                <td>@review.Customer?.FullName</td>
+                <td>@review.Field?.Name</td>
+                <td>@review.Rating</td>
+                <td>@review.Comment</td>
+                <td>@review.CreatedAt.ToString("dd/MM/yyyy")</td>
+                <td>@(review.IsVisible ? "Hiện" : "Ẩn")</td>
+                <td>
+                    <form method="post" asp-action="Hide">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@review.Id" />
+                        <input type="hidden" name="visible" value="@(!review.IsVisible)" />
+                        <button class="btn btn-line btn-sm" type="submit">@(review.IsVisible ? "Ẩn" : "Hiện")</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_Pager" model="paging" />

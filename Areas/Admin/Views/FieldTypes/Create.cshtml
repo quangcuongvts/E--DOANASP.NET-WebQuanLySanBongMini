@@ -1,0 +1,15 @@
+@model FieldType
+@{
+    ViewData["Title"] = "Thêm loại sân";
+}
+<h2>Thêm loại sân</h2>
+<form class="panel p-4" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="validation"></div>
+    <div class="field"><label>Tên</label><input asp-for="Name" /><span asp-validation-for="Name" class="validation"></span></div>
+    <div class="field mt-2"><label>Sức chứa</label><input asp-for="Capacity" /><span asp-validation-for="Capacity" class="validation"></span></div>
+    <div class="field mt-2"><label>Mô tả</label><textarea asp-for="Description" rows="3"></textarea></div>
+    <label class="mt-2"><input asp-for="IsActive" /> Đang dùng</label>
+    <div><button class="btn btn-green mt-3" type="submit">Lưu</button></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

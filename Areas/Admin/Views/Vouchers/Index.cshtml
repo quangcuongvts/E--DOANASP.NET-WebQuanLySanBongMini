@@ -1,0 +1,40 @@
+@model List<Voucher>
+@{
+    ViewData["Title"] = "Voucher";
+    var paging = (PagingModel)ViewBag.Paging;
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2 class="m-0">Voucher</h2>
+    <a class="btn btn-green btn-sm" asp-action="Create">Tạo voucher</a>
+</div>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <input name="q" value="@ViewBag.Keyword" placeholder="Mã hoặc tên" />
+        <button class="btn btn-dark" type="submit">Tìm</button>
+    </div>
+</form>
+<div class="table-card">
+    <table>
+        <tr><th>Mã</th><th>Tên</th><th>Giảm</th><th>Đơn tối thiểu</th><th>Đã dùng</th><th>Hạn</th><th></th></tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.VoucherCode</td>
+                <td>@item.Name</td>
+                <td>@(item.DiscountType == DiscountType.Percentage ? item.DiscountValue + "%" : item.DiscountValue.VndText())</td>
+                <td>@item.MinOrderAmount.VndText()</td>
+                <td>@item.UsedCount / @item.UsageLimit</td>
+                <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a>
+                    <form class="d-inline js-confirm" method="post" asp-action="Delete" data-text="Xóa hoặc ngừng voucher @item.VoucherCode?">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-dark btn-sm" type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_Pager" model="paging" />

@@ -1,0 +1,37 @@
+@model PagingModel
+@{
+    if (Model == null || Model.TotalPages <= 1)
+    {
+        return;
+    }
+    var current = Model.Page < 1 ? 1 : Model.Page;
+    string UrlFor(int page)
+    {
+        var query = Context.Request.Query.ToDictionary(k => k.Key, v => (string?)v.Value.ToString(), StringComparer.OrdinalIgnoreCase);
+        query["page"] = page.ToString();
+        return Context.Request.PathBase + Context.Request.Path + QueryString.Create(query);
+    }
+    var start = Math.Max(1, current - 2);
+    var end = Math.Min(Model.TotalPages, current + 2);
+}
+<nav class="pager">
+    @if (current > 1)
+    {
+        <a href="@UrlFor(current - 1)">‹</a>
+    }
+    @for (var i = start; i <= end; i++)
+    {
+        if (i == current)
+        {
+            <span class="active">@i</span>
+        }
+        else
+        {
+            <a href="@UrlFor(i)">@i</a>
+        }
+    }
+    @if (current < Model.TotalPages)
+    {
+        <a href="@UrlFor(current + 1)">›</a>
+    }
+</nav>

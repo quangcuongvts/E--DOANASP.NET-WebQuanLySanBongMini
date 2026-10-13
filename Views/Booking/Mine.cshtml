@@ -1,0 +1,48 @@
+@model BookingListViewModel
+@{
+    ViewData["Title"] = "Lịch đặt sân của tôi";
+}
+<section class="page-hero"><div class="container"><h1>Lịch đặt sân của tôi</h1></div></section>
+<div class="container section">
+    <div class="toolbar">
+        <div class="d-flex gap-2 flex-wrap">
+            <a class="btn btn-sm @(Model.Filter == "all" ? "btn-dark" : "btn-line")" asp-action="Mine" asp-route-filter="all">Tất cả</a>
+            <a class="btn btn-sm @(Model.Filter == "upcoming" ? "btn-dark" : "btn-line")" asp-action="Mine" asp-route-filter="upcoming">Sắp tới</a>
+            <a class="btn btn-sm @(Model.Filter == "completed" ? "btn-dark" : "btn-line")" asp-action="Mine" asp-route-filter="completed">Hoàn thành</a>
+            <a class="btn btn-sm @(Model.Filter == "cancelled" ? "btn-dark" : "btn-line")" asp-action="Mine" asp-route-filter="cancelled">Đã hủy</a>
+        </div>
+        <a class="btn btn-green btn-sm" asp-action="Create">Đặt sân mới</a>
+    </div>
+    @if (!Model.Items.Any())
+    {
+        <partial name="_Empty" model='@("Chưa có booking nào. Hãy đặt sân và bắt đầu trận đấu đầu tiên của bạn.")' />
+    }
+    else
+    {
+        <div class="table-card">
+            <table>
+                <tr><th>Mã</th><th>Sân</th><th>Ngày</th><th>Thời gian</th><th>Tổng tiền</th><th>Thanh toán</th><th>Trạng thái</th><th></th></tr>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.BookingCode</td>
+                        <td>@item.FieldName</td>
+                        <td>@item.BookingDate.ToString("dd/MM/yyyy")</td>
+                        <td>@DisplayNames.Hours(item.StartTime, item.EndTime)</td>
+                        <td>@item.TotalAmount.VndText()</td>
+                        <td><span class="status @item.PaymentStatus.Css()">@item.PaymentStatus.Text()</span></td>
+                        <td><span class="status @item.Status.Css()">@item.Status.Text()</span></td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a>
+                            @if (item.Status is BookingStatus.Cancelled or BookingStatus.Completed)
+                            {
+                                <a asp-action="Create">Đặt lại</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <partial name="_Pager" model="Model.Paging" />
+    }
+</div>

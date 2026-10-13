@@ -1,0 +1,30 @@
+@model List<FieldType>
+@{
+    ViewData["Title"] = "Loại sân";
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2 class="m-0">Loại sân</h2>
+    <a class="btn btn-green btn-sm" asp-action="Create">Thêm loại</a>
+</div>
+<div class="table-card">
+    <table>
+        <tr><th>Tên</th><th>Sức chứa</th><th>Mô tả</th><th>Trạng thái</th><th></th></tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Capacity</td>
+                <td>@item.Description</td>
+                <td>@(item.IsActive ? "Đang dùng" : "Ngừng")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a>
+                    <form class="d-inline js-confirm" method="post" asp-action="Delete" data-text="Xóa hoặc ngừng loại sân @item.Name?">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-dark btn-sm" type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

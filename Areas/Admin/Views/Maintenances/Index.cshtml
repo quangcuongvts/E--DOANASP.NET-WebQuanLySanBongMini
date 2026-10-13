@@ -1,0 +1,47 @@
+@model List<Maintenance>
+@{
+    ViewData["Title"] = "Bảo trì";
+    var paging = (PagingModel)ViewBag.Paging;
+    MaintenanceStatus? status = ViewBag.Status as MaintenanceStatus?;
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2 class="m-0">Bảo trì sân</h2>
+    <a class="btn btn-green btn-sm" asp-action="Create">Tạo lịch bảo trì</a>
+</div>
+<form class="panel p-3 mb-3" method="get">
+    <div class="search-grid">
+        <select name="status">
+            <option value="">Mọi trạng thái</option>
+            @foreach (MaintenanceStatus item in Enum.GetValues(typeof(MaintenanceStatus)))
+            {
+                <option value="@item" selected="@(status == item ? "selected" : null)">@item.Text()</option>
+            }
+        </select>
+        <button class="btn btn-dark" type="submit">Lọc</button>
+    </div>
+</form>
+<div class="table-card">
+    <table>
+        <tr><th>Sân</th><th>Tiêu đề</th><th>Thời gian</th><th>Chi phí</th><th>Trạng thái</th><th>Người tạo</th><th></th></tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Field?.Name</td>
+                <td>@item.Title</td>
+                <td>@item.StartDateTime.ToString("dd/MM/yyyy HH:mm") - @item.EndDateTime.ToString("HH:mm")</td>
+                <td>@item.Cost.VndText()</td>
+                <td>@item.Status.Text()</td>
+                <td>@item.Creator?.FullName</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a>
+                    <form class="d-inline js-confirm" method="post" asp-action="Delete" data-text="Hủy lịch bảo trì @item.Title?">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-dark btn-sm" type="submit">Hủy</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_Pager" model="paging" />

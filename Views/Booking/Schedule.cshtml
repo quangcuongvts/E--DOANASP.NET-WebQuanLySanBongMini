@@ -1,0 +1,50 @@
+@model List<FieldScheduleDto>
+@{
+    ViewData["Title"] = "Lịch sân";
+    var date = (DateOnly)ViewBag.Date;
+    var fields = (List<FootballField>)ViewBag.Fields;
+    var fieldId = ViewBag.FieldId as int?;
+}
+<section class="page-hero"><div class="container"><h1>Lịch sân trống</h1><p>Xanh còn trống · Đỏ đã đặt · Cam chờ thanh toán · Xám bảo trì</p></div></section>
+<div class="container section">
+    <form class="filters" method="get">
+        <div class="field"><label>Ngày</label><input type="date" name="date" value="@date.ToString("yyyy-MM-dd")" /></div>
+        <div class="field"><label>Sân</label>
+            <select name="fieldId">
+                <option value="">Tất cả sân</option>
+                @foreach (var field in fields)
+                {
+                    <option value="@field.Id" selected="@(fieldId == field.Id ? "selected" : null)">@field.FieldCode - @field.Name</option>
+                }
+            </select>
+        </div>
+        <button class="btn btn-green" type="submit">Xem lịch</button>
+    </form>
+    <div class="table-card mt-4 schedule-wrap">
+        @if (!Model.Any())
+        {
+            <partial name="_Empty" model='@("Không có sân để hiển thị.")' />
+        }
+        @foreach (var field in Model)
+        {
+            <h3>@field.FieldCode · @field.FieldName</h3>
+            <table class="slot-table">
+                <tr><th>Khung giờ</th><th>Trạng thái</th><th>Giá</th><th></th></tr>
+                @foreach (var slot in field.Slots)
+                {
+                    <tr>
+                        <td>@slot.Start – @slot.End</td>
+                        <td><span class="slot slot-@slot.Status">@slot.StatusText</span></td>
+                        <td>@slot.Price.VndText()</td>
+                        <td>
+                            @if (slot.Status == "available")
+                            {
+                                <a class="btn btn-green btn-sm" asp-action="Create" asp-route-fieldId="@field.FieldId" asp-route-date="@date.ToString("yyyy-MM-dd")" asp-route-start="@slot.Start" asp-route-end="@slot.End">Đặt</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</div>

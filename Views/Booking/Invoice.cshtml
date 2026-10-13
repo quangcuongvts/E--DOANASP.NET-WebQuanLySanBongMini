@@ -1,0 +1,39 @@
+@model BookingDetailViewModel
+@{
+    Layout = null;
+    var settings = ViewBag.Settings as Dictionary<string, string> ?? new Dictionary<string, string>();
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>Hóa đơn @Model.BookingCode</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="invoice">
+        <h1>⚽ MINI FOOTBALL</h1>
+        <p>Hóa đơn đặt sân</p>
+        <p><strong>@Model.BookingCode</strong> · @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+        <p>Khách: @Model.CustomerName · @Model.Phone</p>
+        <p>Sân: @Model.FieldName (@Model.FieldCode)</p>
+        <p>Lịch: @Model.BookingDate.ToString("dd/MM/yyyy") @DisplayNames.Hours(Model.StartTime, Model.EndTime)</p>
+        <table>
+            <tr><td>Tiền sân</td><td>@Model.OriginalAmount.VndText()</td></tr>
+            @foreach (var service in Model.Services)
+            {
+                <tr><td>@service.Name x@service.Quantity</td><td>@service.Total.VndText()</td></tr>
+            }
+            <tr><td>Giảm giá</td><td>- @Model.DiscountAmount.VndText()</td></tr>
+            <tr><td><strong>Tổng</strong></td><td><strong>@Model.TotalAmount.VndText()</strong></td></tr>
+        </table>
+        <p>Thanh toán: @Model.PaymentStatus.Text()</p>
+        @foreach (var payment in Model.Payments)
+        {
+            <p>@payment.PaymentCode · @payment.PaymentMethod.Text() · @payment.Amount.VndText() · @payment.TransactionCode</p>
+        }
+        <p>@settings.GetValueOrDefault("Address") · @settings.GetValueOrDefault("Hotline")</p>
+        <button class="btn btn-dark no-print" onclick="window.print()">In hóa đơn</button>
+    </div>
+</body>
+</html>

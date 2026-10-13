@@ -1,0 +1,17 @@
+@model NotificationBellViewModel
+@if (Model.Unread > 0 || Model.Items.Count > 0)
+{
+    <div class="dropdown">
+        <button class="btn btn-ghost btn-sm" type="button"><i class="bi bi-bell"></i> @Model.Unread</button>
+        <div class="dropdown-menu">
+            @foreach (var item in Model.Items)
+            {
+                <a href="@(item.Link ?? "/Notifications")">
+                    <strong>@item.Title</strong><br />
+                    <small class="muted">@item.Message</small>
+                </a>
+            }
+            <a asp-area="" asp-controller="Notifications" asp-action="Index">Xem tất cả</a>
+        </div>
+    </div>
+}

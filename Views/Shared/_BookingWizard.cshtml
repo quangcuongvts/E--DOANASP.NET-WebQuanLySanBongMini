@@ -1,0 +1,68 @@
+@model BookingPageViewModel
+@{
+    var action = Model.IsCounter ? "Create" : "Create";
+}
+<div id="booking-app" data-start="@Model.Start" data-end="@Model.End">
+    <form id="booking-form" method="post" asp-action="@action">
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="FieldId" name="FieldId" value="@Model.FieldId" />
+        <input type="hidden" id="StartTime" name="StartTime" value="@Model.Start" />
+        <input type="hidden" id="EndTime" name="EndTime" value="@Model.End" />
+        <input type="hidden" id="VoucherCode" name="VoucherCode" />
+        <div class="wizard">
+            <div class="panel" style="padding:18px">
+                <h3>1. Chọn sân</h3>
+                <div class="choice-grid">
+                    @foreach (var field in Model.Fields)
+                    {
+                        <div class="choice field-choice @(Model.FieldId == field.Id ? "active" : "")" data-id="@field.Id">
+                            <div>
+                                <strong>@field.Name</strong>
+                                <div class="muted">@field.Code · @field.TypeName · @field.BasePrice.VndText()/h</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <h3 class="mt-4">2. Chọn ngày và giờ</h3>
+                <input type="date" id="BookingDate" name="BookingDate" value="@Model.Date.ToString("yyyy-MM-dd")" min="@AppClock.Today.ToString("yyyy-MM-dd")" />
+                <div id="slot-box" class="choice-grid mt-3"></div>
+                <p id="quote-message" class="muted"></p>
+                <h3>3. Dịch vụ bổ sung</h3>
+                @foreach (var service in Model.Services)
+                {
+                    <div class="service-row">
+                        <label><input class="svc-check" type="checkbox" data-id="@service.Id" /> @service.Name</label>
+                        <span>@service.Price.VndText()</span>
+                        <input class="svc-qty" data-id="@service.Id" type="number" min="1" max="20" value="1" style="width:80px" />
+                    </div>
+                }
+                @if (Model.IsCounter)
+                {
+                    <h3 class="mt-4">Khách tại quầy</h3>
+                    <input type="hidden" id="CustomerId" name="CustomerId" />
+                    <div class="field"><label>Số điện thoại</label><input id="WalkInPhone" name="WalkInPhone" /></div>
+                    <button class="btn btn-line btn-sm mt-2" id="lookup-customer" type="button">Tìm khách</button>
+                    <p id="lookup-result" class="muted"></p>
+                    <div class="field"><label>Họ tên khách vãng lai</label><input name="WalkInName" /></div>
+                }
+                <h3 class="mt-4">4. Voucher và ghi chú</h3>
+                <div class="d-flex gap-2">
+                    <input id="voucher-text" placeholder="Nhập mã voucher" />
+                    <button class="btn btn-line" id="apply-voucher" type="button">Áp dụng</button>
+                </div>
+                <div class="field mt-2"><label>Ghi chú</label><textarea name="Note" rows="3"></textarea></div>
+                <h3>5. Thanh toán</h3>
+                @foreach (PaymentMethod method in Enum.GetValues(typeof(PaymentMethod)))
+                {
+                    <label class="choice"><input type="radio" name="PaymentMethod" value="@((int)method)" checked="@(method == PaymentMethod.Cash ? "checked" : null)" /> @method.Text()</label>
+                }
+            </div>
+            <aside class="summary-card">
+                <h3>Tổng thanh toán</h3>
+                <div id="quote-summary"><p class="muted">Chọn sân và khung giờ để hệ thống tính giá.</p></div>
+                <button class="btn btn-green w-100 mt-3" type="submit">Xác nhận đặt sân</button>
+            </aside>
+        </div>
+    </form>
+</div>
+<script src="~/js/booking.js" asp-append-version="true"></script>

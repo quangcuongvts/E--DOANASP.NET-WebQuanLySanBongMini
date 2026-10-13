@@ -1,0 +1,77 @@
+@model FieldFilterViewModel
+@{
+    ViewData["Title"] = "Danh sách sân";
+}
+<section class="page-hero"><div class="container"><h1>Danh sách sân bóng</h1><p>Tìm sân trống theo ngày, giờ, giá và khu vực.</p></div></section>
+<div class="container">
+    <form class="filters" method="get">
+        <div class="field"><label>Từ khóa</label><input name="q" value="@Model.Keyword" /></div>
+        <div class="field"><label>Loại sân</label>
+            <select name="typeId">
+                <option value="">Tất cả</option>
+                @foreach (var type in Model.Types)
+                {
+                    <option value="@type.Id" selected="@(Model.TypeId == type.Id ? "selected" : null)">@type.Name</option>
+                }
+            </select>
+        </div>
+        <div class="field"><label>Khu vực</label>
+            <select name="area">
+                <option value="">Tất cả</option>
+                @foreach (var area in Model.Areas)
+                {
+                    <option value="@area" selected="@(Model.Area == area ? "selected" : null)">@area</option>
+                }
+            </select>
+        </div>
+        <div class="field"><label>Trạng thái</label>
+            <select name="status">
+                <option value="">Tất cả</option>
+                @foreach (var status in new[] { FieldStatus.Available, FieldStatus.Occupied, FieldStatus.Maintenance })
+                {
+                    <option value="@status" selected="@(Model.Status == status ? "selected" : null)">@status.Text()</option>
+                }
+            </select>
+        </div>
+        <div class="field"><label>Ngày</label><input type="date" name="date" value="@Model.Date?.ToString("yyyy-MM-dd")" /></div>
+        <div class="field"><label>Từ giờ</label><input type="time" name="start" value="@Model.Start?.ToString("HH:mm")" /></div>
+        <div class="field"><label>Đến giờ</label><input type="time" name="end" value="@Model.End?.ToString("HH:mm")" /></div>
+        <div class="field"><label>Sắp xếp</label>
+            <select name="sort">
+                <option value="popular" selected="@(Model.Sort == "popular" ? "selected" : null)">Sân phổ biến</option>
+                <option value="price_asc" selected="@(Model.Sort == "price_asc" ? "selected" : null)">Giá thấp → cao</option>
+                <option value="price_desc" selected="@(Model.Sort == "price_desc" ? "selected" : null)">Giá cao → thấp</option>
+                <option value="rating" selected="@(Model.Sort == "rating" ? "selected" : null)">Đánh giá cao nhất</option>
+            </select>
+        </div>
+        <div class="field"><label>Giá từ</label><input type="number" name="minPrice" value="@Model.MinPrice" /></div>
+        <div class="field"><label>Giá đến</label><input type="number" name="maxPrice" value="@Model.MaxPrice" /></div>
+        <button class="btn btn-green" type="submit">Lọc sân</button>
+    </form>
+    <div class="toolbar"><span>@Model.TotalItems sân</span></div>
+    @if (!Model.Fields.Any())
+    {
+        <partial name="_Empty" model='@("Chưa có sân phù hợp bộ lọc.")' />
+    }
+    <div class="field-grid">
+        @foreach (var field in Model.Fields)
+        {
+            <article class="field-card">
+                <div class="field-photo" style="background-image:url('@(field.ImageUrl ?? "/images/field.svg")')">
+                    <span class="status photo-badge @field.DisplayStatus.Css()">@field.DisplayStatus.Text()</span>
+                </div>
+                <div class="field-body">
+                    <div class="meta"><span>@field.FieldCode</span><span>@field.TypeName</span><span>@field.Capacity người</span></div>
+                    <h3>@field.Name</h3>
+                    <p class="muted mb-1">@field.Area</p>
+                    <div class="d-flex justify-content-between"><span>★ @field.RatingAverage.ToString("0.0")</span><span class="price">@field.BasePrice.VndText()</span></div>
+                    <div class="card-actions">
+                        <a class="btn btn-line btn-sm" asp-action="Details" asp-route-id="@field.Id">Xem chi tiết</a>
+                        <a class="btn btn-green btn-sm" asp-controller="Booking" asp-action="Create" asp-route-fieldId="@field.Id" asp-route-date="@Model.Date?.ToString("yyyy-MM-dd")">Đặt sân</a>
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+    <partial name="_Pager" model="new PagingModel { Page = Model.Page, TotalPages = Model.TotalPages, TotalItems = Model.TotalItems }" />
+</div>

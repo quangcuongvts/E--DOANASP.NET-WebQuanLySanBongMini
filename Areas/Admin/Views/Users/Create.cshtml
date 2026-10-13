@@ -1,0 +1,36 @@
+@model UserFormViewModel
+@{
+    ViewData["Title"] = string.IsNullOrEmpty(Model.Id) ? "Tạo tài khoản" : "Sửa tài khoản";
+}
+<h2>@ViewData["Title"]</h2>
+<form class="panel p-4" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="validation"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="search-grid">
+        <div class="field"><label>Họ tên</label><input asp-for="FullName" /><span asp-validation-for="FullName" class="validation"></span></div>
+        <div class="field"><label>Email</label><input asp-for="Email" /><span asp-validation-for="Email" class="validation"></span></div>
+        <div class="field"><label>Điện thoại</label><input asp-for="Phone" /><span asp-validation-for="Phone" class="validation"></span></div>
+        <div class="field"><label>Ngày sinh</label><input asp-for="DateOfBirth" type="date" /></div>
+        <div class="field"><label>Giới tính</label>
+            <select asp-for="Gender">
+                <option value="@Gender.Male">Nam</option>
+                <option value="@Gender.Female">Nữ</option>
+                <option value="@Gender.Other">Khác</option>
+            </select>
+        </div>
+        <div class="field"><label>Địa chỉ</label><input asp-for="Address" /></div>
+        <div class="field"><label>Vai trò</label>
+            <select asp-for="Role">
+                <option>Admin</option>
+                <option>Manager</option>
+                <option>Staff</option>
+                <option>Customer</option>
+            </select>
+        </div>
+        <div class="field"><label>@(string.IsNullOrEmpty(Model.Id) ? "Mật khẩu" : "Mật khẩu mới (để trống nếu giữ nguyên)")</label><input asp-for="Password" /><span asp-validation-for="Password" class="validation"></span></div>
+    </div>
+    <label class="mt-2"><input asp-for="IsActive" /> Tài khoản hoạt động</label>
+    <div><button class="btn btn-green mt-3" type="submit">Lưu</button></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

@@ -1,0 +1,15 @@
+@model Post
+@{
+    ViewData["Title"] = "Viết bài";
+}
+<h2>Bài viết mới</h2>
+<form class="panel p-4" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="validation"></div>
+    <div class="field"><label>Tiêu đề</label><input asp-for="Title" /><span asp-validation-for="Title" class="validation"></span></div>
+    <div class="field mt-2"><label>Tóm tắt</label><textarea asp-for="Summary" rows="2"></textarea><span asp-validation-for="Summary" class="validation"></span></div>
+    <div class="field mt-2"><label>Nội dung HTML</label><textarea asp-for="Content" rows="8"></textarea><span asp-validation-for="Content" class="validation"></span></div>
+    <div class="field mt-2"><label>Ảnh bìa</label><input type="file" name="thumbnail" accept=".jpg,.jpeg,.png,.webp,.gif" /></div>
+    <label class="mt-2"><input asp-for="IsPublished" /> Xuất bản</label>
+    <div><button class="btn btn-green mt-3" type="submit">Đăng</button></div>
+</form>

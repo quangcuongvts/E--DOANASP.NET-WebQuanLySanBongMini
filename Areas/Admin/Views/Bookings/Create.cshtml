@@ -1,0 +1,7 @@
+@{
+    ViewData["Title"] = "Đặt sân tại quầy";
+    var page = (BookingPageViewModel)ViewBag.Page;
+}
+<h2>Tạo booking tại quầy</h2>
+<p class="muted">Khách chưa có tài khoản sẽ được tạo với mật khẩu tạm Walkin@123.</p>
+<partial name="_BookingWizard" model="page" />

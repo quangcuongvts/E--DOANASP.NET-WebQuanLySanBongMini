@@ -1,0 +1,53 @@
+@model RescheduleViewModel
+@{
+    ViewData["Title"] = "Đổi lịch";
+    var page = (BookingPageViewModel)ViewBag.Page;
+}
+<section class="page-hero"><div class="container"><h1>Đổi lịch @Model.BookingCode</h1><p>@Model.FieldName</p></div></section>
+<div class="container section">
+    <form method="post" id="reschedule-form">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <input type="hidden" name="FieldId" value="@Model.FieldId" />
+        <div class="panel p-3">
+            <label>Ngày mới</label>
+            <input type="date" name="BookingDate" value="@Model.BookingDate.ToString("yyyy-MM-dd")" min="@AppClock.Today.ToString("yyyy-MM-dd")" />
+            <div class="choice-grid mt-3" id="reschedule-slots"></div>
+            <input type="hidden" id="reschedule-start" name="StartTime" value="@Model.StartTime.ToString("HH:mm")" />
+            <input type="hidden" id="reschedule-end" name="EndTime" value="@Model.EndTime.ToString("HH:mm")" />
+            <button class="btn btn-green mt-3" type="submit">Lưu lịch mới</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+<script>
+const box = document.getElementById('reschedule-slots');
+const dateInput = document.querySelector('[name="BookingDate"]');
+let anchor = null;
+async function load() {
+  const response = await fetch(`/Booking/Slots?fieldId=@Model.FieldId&date=${dateInput.value}`);
+  const data = await response.json();
+  box.innerHTML = '';
+  data.slots.forEach(slot => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `slot slot-${slot.status}`;
+    button.textContent = `${slot.start} – ${slot.end} · ${slot.statusText}`;
+    button.dataset.start = slot.start;
+    button.dataset.end = slot.end;
+    button.dataset.status = slot.status;
+    button.onclick = () => {
+      if (slot.status !== 'available') return;
+      if (!anchor) { anchor = button; button.classList.add('slot-selected'); return; }
+      document.getElementById('reschedule-start').value = anchor.dataset.start;
+      document.getElementById('reschedule-end').value = button.dataset.end;
+      anchor = null;
+      load();
+    };
+    box.appendChild(button);
+  });
+}
+dateInput.addEventListener('change', () => { anchor = null; load(); });
+load();
+</script>
+}

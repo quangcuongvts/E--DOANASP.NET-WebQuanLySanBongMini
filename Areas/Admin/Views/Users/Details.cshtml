@@ -1,0 +1,20 @@
+@model ApplicationUser
+@{
+    ViewData["Title"] = Model.FullName;
+    var roles = ViewBag.Roles as IList<string> ?? new List<string>();
+}
+<div class="panel p-4">
+    <h2>@Model.FullName</h2>
+    @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+    {
+        <img class="avatar" src="@Model.AvatarUrl" alt="" style="width:72px;height:72px" />
+    }
+    <p>@Model.Email · @Model.PhoneNumber</p>
+    <p>Vai trò: @string.Join(", ", roles)</p>
+    <p>Giới tính: @Model.Gender.Text() · Sinh: @Model.DateOfBirth?.ToString("dd/MM/yyyy")</p>
+    <p>@Model.Address</p>
+    <p>Trạng thái: @(Model.IsActive ? "Hoạt động" : "Đã khóa") · Số booking: @ViewBag.Bookings</p>
+    <p>Tạo lúc @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+    <a class="btn btn-green" asp-action="Edit" asp-route-id="@Model.Id">Sửa</a>
+    <a class="btn btn-line" asp-action="Index">Danh sách</a>
+</div>

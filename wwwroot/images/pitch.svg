@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Sân bóng mini">
+  <defs>
+    <linearGradient id="turf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f8f4e"/>
+      <stop offset="100%" stop-color="#0d5c32"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#turf)"/>
+  <g stroke="#f4fff8" stroke-opacity=".9" fill="none" stroke-width="6">
+    <rect x="70" y="50" width="1060" height="600" rx="8"/>
+    <line x1="600" y1="50" x2="600" y2="650"/>
+    <circle cx="600" cy="350" r="90"/>
+    <circle cx="600" cy="350" r="6" fill="#f4fff8"/>
+    <rect x="70" y="190" width="160" height="320"/>
+    <rect x="70" y="270" width="70" height="160"/>
+    <rect x="970" y="190" width="160" height="320"/>
+    <rect x="1060" y="270" width="70" height="160"/>
+    <path d="M230 270 a90 90 0 0 1 0 160"/>
+    <path d="M970 270 a90 90 0 0 0 0 160"/>
+  </g>
+</svg>

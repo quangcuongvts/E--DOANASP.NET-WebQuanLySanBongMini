@@ -1,0 +1,21 @@
+@model List<ApplicationUser>
+@{
+    ViewData["Title"] = "Nhân viên";
+}
+<h2>Nhân viên sân</h2>
+<div class="table-card">
+    <table>
+        <tr><th>Họ tên</th><th>Email</th><th>Điện thoại</th><th>Trạng thái</th><th></th></tr>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>@(user.IsActive ? "Hoạt động" : "Đã khóa")</td>
+                <td><a asp-action="Details" asp-route-id="@user.Id">Chi tiết</a></td>
+            </tr>
+        }
+    </table>
+</div>
+<p class="muted mt-3">Quản lý xem danh sách nhân viên. Việc gán vai trò Admin chỉ thực hiện ở trang Người dùng.</p>
